@@ -15,7 +15,7 @@ export default function Opportunity() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="opportunity" className="section bg-ink">
+    <section id="opportunity" data-act="details" className="section">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="container-page">
         <div className="grid gap-12 lg:grid-cols-12">

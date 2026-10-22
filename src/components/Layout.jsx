@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import ScrollProgress from "./ScrollProgress";
+import StageBackdrop from "./stage/StageBackdrop";
 
 export default function Layout() {
   const { pathname, hash } = useLocation();
@@ -40,7 +41,8 @@ export default function Layout() {
       </a>
       <ScrollProgress />
       <Navbar />
-      <main id="main">
+      {pathname === "/" ? <StageBackdrop /> : null}
+      <main id="main" className="relative z-10">
         <Outlet />
       </main>
       <Footer />

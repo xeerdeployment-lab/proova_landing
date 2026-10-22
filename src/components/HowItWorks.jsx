@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { steps } from "../data/content";
 import { fadeUp, stagger, viewport } from "../lib/motion";
 import SectionHeading from "./SectionHeading";
+import TiltCard from "./ui/TiltCard";
 
 const stepIcons = [UserPlus, BookOpen, Network];
 
@@ -14,7 +15,7 @@ export default function HowItWorks() {
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
 
   return (
-    <section className="section overflow-hidden bg-ink">
+    <section id="how-it-works" data-act="path" className="section overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="container-page">
         <SectionHeading
@@ -76,11 +77,11 @@ function Step({ step, index, progress, reduce }) {
         />
         <Icon size={20} strokeWidth={1.6} className="relative text-snow" aria-hidden="true" />
       </div>
-      <div>
-        <p className="serif-accent text-2xl text-gold/90">{step.number}</p>
-        <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-snow">{step.title}</h3>
+      <TiltCard className="glass-deep min-w-0 flex-1 rounded-[1.6rem] p-6 sm:p-7 lg:mt-8 lg:w-full">
+        <p className="tilt-layer serif-accent text-2xl text-gold/90 [--depth:14px]">{step.number}</p>
+        <h3 className="tilt-layer mt-2 text-2xl font-semibold tracking-[-0.03em] text-snow [--depth:8px]">{step.title}</h3>
         <p className="mt-3 max-w-sm text-sm leading-relaxed text-mist sm:text-base lg:mx-auto">{step.body}</p>
-      </div>
+      </TiltCard>
     </motion.li>
   );
 }

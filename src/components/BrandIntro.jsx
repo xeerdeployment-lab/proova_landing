@@ -2,7 +2,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react";
 import { principles } from "../data/content";
 import { fadeUp, stagger, viewport } from "../lib/motion";
-import SpotlightCard from "./ui/SpotlightCard";
+import TiltCard from "./ui/TiltCard";
 
 const statement =
   "PROOVA is being built as a considered home for a community business opportunity — a place to understand the model, learn with other people, and decide with the terms in view.";
@@ -15,8 +15,8 @@ export default function BrandIntro() {
   const words = statement.split(" ");
 
   return (
-    <section id="about" className="section overflow-hidden bg-navy">
-      <div aria-hidden="true" className="pointer-events-none absolute top-1/3 -left-40 h-[28rem] w-[28rem] rounded-full bg-royal/10 blur-3xl" />
+    <section id="about" data-act="intro" className="section overflow-hidden">
+      
       <div className="container-page relative">
         <motion.p
           className="eyebrow"
@@ -75,11 +75,11 @@ export default function BrandIntro() {
             viewport={viewport}
           >
             {principles.map((item, index) => (
-              <SpotlightCard key={item.title} as="article" variants={fadeUp} className="panel p-6">
-                <p className="serif-accent text-4xl text-gold/90">0{index + 1}</p>
-                <h3 className="mt-6 text-lg leading-snug font-semibold tracking-[-0.02em] text-snow">{item.title}</h3>
+              <TiltCard key={item.title} as="article" variants={fadeUp} className="panel p-6">
+                <p className="tilt-layer serif-accent text-4xl text-gold/90 [--depth:16px]">0{index + 1}</p>
+                <h3 className="tilt-layer mt-6 text-lg leading-snug font-semibold tracking-[-0.02em] text-snow [--depth:8px]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-mist">{item.body}</p>
-              </SpotlightCard>
+              </TiltCard>
             ))}
           </motion.div>
         </div>

@@ -12,7 +12,7 @@ export default function FAQ() {
   const baseId = useId();
 
   return (
-    <section id="faq" className="section bg-navy">
+    <section id="faq" data-act="details" className="section">
       <div className="container-page grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">

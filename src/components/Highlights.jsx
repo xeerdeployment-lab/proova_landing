@@ -8,7 +8,7 @@ export default function Highlights() {
   const reduce = useReducedMotion();
 
   return (
-    <section aria-labelledby="facts-title" className="relative border-y border-white/[0.06] bg-navy">
+    <section aria-labelledby="facts-title" data-act="intro" className="relative border-y border-white/[0.06] bg-ink/55">
       <div className="container-page py-14 md:py-16">
         <motion.div
           className="grid gap-10 lg:grid-cols-12 lg:items-center"
@@ -26,7 +26,7 @@ export default function Highlights() {
 
           <div className="grid gap-px overflow-hidden rounded-[1.4rem] border border-white/[0.07] bg-white/[0.07] sm:grid-cols-3 lg:col-span-9">
             {highlights.map((item) => (
-              <motion.article key={item.label} variants={fadeUp} className="bg-navy p-6 sm:p-7">
+              <motion.article key={item.label} variants={fadeUp} className="bg-[#070b17]/90 p-6 sm:p-7">
                 <p className="text-spectrum text-5xl font-semibold tracking-[-0.06em]">
                   <CountUp value={item.value} />
                 </p>

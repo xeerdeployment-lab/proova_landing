@@ -8,7 +8,7 @@ export default function WhyProova() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="section bg-navy">
+    <section id="features" data-act="features" className="section">
       <div className="container-page">
         <SectionHeading
           eyebrow="Why PROOVA"

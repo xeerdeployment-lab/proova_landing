@@ -1,6 +1,6 @@
 import { GraduationCap, MonitorSmartphone, ShieldCheck, Users } from "lucide-react";
 import { fadeUp } from "../lib/motion";
-import SpotlightCard from "./ui/SpotlightCard";
+import TiltCard from "./ui/TiltCard";
 
 const icons = {
   GraduationCap,
@@ -20,18 +20,21 @@ export default function FeatureCard({
   const Icon = icons[icon] ?? Users;
 
   return (
-    <SpotlightCard
+    <TiltCard
       as="article"
       variants={fadeUp}
+      max={featured ? 4 : 7}
       className={`panel group flex h-full flex-col p-6 sm:p-8 ${featured ? "min-h-[22rem]" : ""} ${
         wide ? "sm:flex-row sm:items-start sm:gap-8" : ""
       } ${className}`}
     >
       {featured ? <Orbit /> : null}
-      <span className="relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-b from-royal/25 to-royal/5 text-iris transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:rotate-[-6deg] motion-reduce:transition-none">
-        <Icon size={20} strokeWidth={1.6} aria-hidden="true" />
+      <span className="tilt-layer relative inline-flex shrink-0 self-start [--depth:18px]">
+        <span className="icon-orbit inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-b from-royal/30 to-[#0b1230] text-cyan shadow-[0_10px_30px_-10px_rgba(90,215,242,0.5)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:rotate-[-6deg] motion-reduce:transition-none">
+          <Icon size={20} strokeWidth={1.6} aria-hidden="true" />
+        </span>
       </span>
-      <div className={`relative ${featured ? "mt-auto" : ""}`}>
+      <div className={`tilt-layer relative [--depth:8px] ${featured ? "mt-auto" : ""}`}>
         <h3
           className={`font-semibold tracking-[-0.03em] text-snow ${featured ? "mt-10 max-w-sm text-3xl leading-tight sm:text-4xl" : "mt-6 text-xl"} ${
             wide ? "sm:mt-0" : ""
@@ -41,7 +44,7 @@ export default function FeatureCard({
         </h3>
         <p className={`mt-3 leading-relaxed text-mist ${featured ? "max-w-md text-base" : "text-sm"}`}>{body}</p>
       </div>
-    </SpotlightCard>
+    </TiltCard>
   );
 }
 
@@ -58,18 +61,20 @@ function Orbit() {
   return (
     <svg
       viewBox="0 0 400 280"
-      className="pointer-events-none absolute -top-6 -right-16 w-[26rem] opacity-70 transition-opacity duration-500 group-hover:opacity-100 sm:-right-6"
+      className="tilt-layer pointer-events-none absolute -top-6 -right-16 w-[26rem] opacity-70 [--depth:-16px] transition-[opacity,transform] duration-500 group-hover:opacity-100 sm:-right-6"
       aria-hidden="true"
     >
       <circle cx="205" cy="140" r="100" fill="none" stroke="rgba(165,160,255,0.16)" />
       <circle cx="205" cy="140" r="62" fill="none" stroke="rgba(165,160,255,0.1)" strokeDasharray="2 6" />
       <circle cx="205" cy="140" r="26" fill="rgba(99,91,255,0.22)" stroke="rgba(216,189,131,0.6)" />
-      {dots.map(([x, y]) => (
-        <g key={`${x}-${y}`}>
-          <line x1="205" y1="140" x2={x} y2={y} stroke="rgba(165,160,255,0.18)" />
-          <circle cx={x} cy={y} r="6" fill="#0a0f1e" stroke="rgba(165,160,255,0.7)" />
-        </g>
-      ))}
+      <g className="orbit-spin">
+        {dots.map(([x, y]) => (
+          <g key={`${x}-${y}`}>
+            <line x1="205" y1="140" x2={x} y2={y} stroke="rgba(90,215,242,0.22)" />
+            <circle cx={x} cy={y} r="6" fill="#0a0f1e" stroke="rgba(90,215,242,0.75)" />
+          </g>
+        ))}
+      </g>
     </svg>
   );
 }

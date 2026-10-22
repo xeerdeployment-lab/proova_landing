@@ -31,7 +31,7 @@ export default function PlatformShowcase() {
   };
 
   return (
-    <section id="platform" className="section overflow-hidden bg-ink">
+    <section id="platform" data-act="platform" className="section overflow-hidden">
       <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-50" />
       <div aria-hidden="true" className="orb pointer-events-none absolute -right-60 top-20 h-[34rem] w-[34rem] opacity-30" />
 
@@ -297,7 +297,7 @@ function ModuleGrid() {
           const Icon = item.icon;
           return (
             <motion.li key={item.to} variants={fadeUp}>
-              <SpotlightCard className="h-full rounded-2xl border border-white/[0.07] bg-white/[0.02]">
+              <SpotlightCard className="h-full rounded-2xl border border-white/[0.07] bg-[#080c1b]/80 backdrop-blur-sm">
                 <Link to={item.to} className="flex h-full flex-col gap-4 p-4">
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-royal/15 text-iris">
                     <Icon size={17} strokeWidth={1.7} aria-hidden="true" />
