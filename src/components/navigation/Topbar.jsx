@@ -93,15 +93,7 @@ export default function Topbar() {
           </nav>
           <h1 className="truncate text-lg font-semibold tracking-[-0.03em] sm:text-xl">{current.label}</h1>
         </div>
-        <button
-          type="button"
-          className="hidden h-10 items-center gap-3 rounded-full border border-line bg-card/80 px-3 text-sm text-mist transition-colors hover:border-royal/40 hover:text-snow md:inline-flex"
-          onClick={() => setSearchOpen(true)}
-        >
-          <Search size={15} aria-hidden="true" />
-          <span>Search</span>
-          <kbd className="rounded-md border border-white/10 px-1.5 py-0.5 text-[0.65rem] tracking-wide">Ctrl K</kbd>
-        </button>
+
         <button
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-card md:hidden"
