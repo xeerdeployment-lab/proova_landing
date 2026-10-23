@@ -1,0 +1,36 @@
+name: React Vite CI
+
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          clean: false
+
+      - name: Configure Node from NVM
+        run: |
+          echo "/root/.nvm/versions/node/v24.21.0/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Node and npm
+        run: |
+          which node
+          node -v
+          which npm
+          npm -v
+
+      - name: Install dependencies
+        run: npm install --prefer-offline --no-audit --no-fund
+
+      - name: Build Vite app
+        run: npm run build
