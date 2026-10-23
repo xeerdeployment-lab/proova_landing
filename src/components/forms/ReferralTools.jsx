@@ -10,8 +10,8 @@ export default function ReferralTools() {
 
   const share = async () => {
     const payload = {
-      title: "PROOVA preview",
-      text: "This is a PROOVA interface preview link. It does not enroll anyone.",
+      title: "proova preview",
+      text: "This is a proova interface preview link. It does not enroll anyone.",
       url: link,
     };
     try {

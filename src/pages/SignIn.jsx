@@ -105,7 +105,7 @@ export default function SignIn() {
             Sign in
           </Button>
           <p className="mt-4 text-sm text-mist">
-            New to PROOVA?{" "}
+            New to Axora?
             <Link to="/get-started" className="text-snow underline-offset-4 hover:underline">
               Get started
             </Link>

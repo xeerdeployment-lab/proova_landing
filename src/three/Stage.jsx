@@ -307,7 +307,7 @@ function monogram() {
 }
 
 /**
- * Original Proova emblem at the heart of the core: a metallic hexagon frame and "P" monogram
+ * Original proova emblem at the heart of the core: a metallic hexagon frame and "P" monogram
  * with lime holographic edges. It sways on its own and leans toward the pointer in the hero.
  */
 function Emblem({ live }) {

@@ -78,7 +78,7 @@ export default function Navbar() {
         transition={{ duration: 0.7, ease, delay: 0.1 }}
       >
         <div className="mx-auto flex h-16 w-full max-w-[86rem] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link to="/#top" aria-label="PROOVA home" className="relative z-10 shrink-0">
+          <Link to="/#top" aria-label="Axora home" className="relative z-10 shrink-0">
             <Logo tagline="Community Network" />
           </Link>
 

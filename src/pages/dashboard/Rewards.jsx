@@ -184,7 +184,7 @@ export default function Rewards() {
           rows={rewardRows}
           categories={rewardCategories}
           caption="Reward history"
-          filename="proova-demo-rewards.csv"
+          filename="axora-demo-rewards.csv"
           emptyTitle="No reward records"
           emptyBody="No sample reward rows match these filters."
         />

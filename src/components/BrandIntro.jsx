@@ -5,7 +5,7 @@ import { fadeUp, stagger, viewport } from "../lib/motion";
 import TiltCard from "./ui/TiltCard";
 
 const statement =
-  "PROOVA is being built as a considered home for a community business opportunity — a place to understand the model, learn with other people, and decide with the terms in view.";
+  "proova is being built as a considered home for a community business opportunity — a place to understand the model, learn with other people, and decide with the terms in view.";
 const emphasis = new Set(["understand", "learn", "decide"]);
 
 export default function BrandIntro() {

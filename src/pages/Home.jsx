@@ -8,13 +8,10 @@ import HowItWorks from "../components/HowItWorks";
 import NetworkVisualization from "../components/NetworkVisualization";
 import Opportunity from "../components/Opportunity";
 import PlatformShowcase from "../components/PlatformShowcase";
-import WhyProova from "../components/WhyProova";
+import Whyproova from "../components/Whyproova";
 import usePageTitle from "../lib/usePageTitle";
 
-/**
- * Sections are ordered as one scroll story; each carries a `data-act` that drives the
- * page-level 3D stage (see three/acts.js).
- */
+
 export default function Home() {
   usePageTitle("");
 
@@ -25,7 +22,7 @@ export default function Home() {
       <BrandIntro />
       <PlatformShowcase />
       <HowItWorks />
-      <WhyProova />
+      <Whyproova />
       <NetworkVisualization />
       <Analytics />
       <Opportunity />

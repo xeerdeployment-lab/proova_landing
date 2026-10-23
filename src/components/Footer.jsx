@@ -15,7 +15,7 @@ export default function Footer() {
       <div aria-hidden="true" className="hairline absolute inset-x-0 top-0" />
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 pt-20 pb-12 sm:px-8 md:grid-cols-12">
         <div className="md:col-span-4">
-          <Link to="/#top" aria-label="PROOVA home" className="inline-flex">
+          <Link to="/#top" aria-label="axora home" className="inline-flex">
             <Logo tagline="Community Network" />
           </Link>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-mist">
@@ -24,7 +24,7 @@ export default function Footer() {
           </p>
           <p className="mt-8 hud-label text-cyan">Contact</p>
           <ul className="mt-3 space-y-2 text-sm text-mist">
-            <li>Email: hello@proova.example</li>
+            <li>Email: hello@axora.example</li>
             <li>Phone: to be announced</li>
             <li>Address: to be announced</li>
           </ul>
@@ -72,13 +72,13 @@ export default function Footer() {
       <div className="border-t border-cyan/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-6 sm:px-8 md:flex-row md:items-start md:justify-between">
           <p className="max-w-3xl text-xs leading-relaxed text-mist">
-            PROOVA presents a community-based business opportunity. Earnings are not guaranteed
+            axora presents a community-based business opportunity. Earnings are not guaranteed
             and depend on individual effort, market conditions, and the official plan terms.
             This website is an introduction. It is not an offer of employment, an investment,
             or a promise of income. Products, compensation, and legal details will be published
             before participation opens. Contact details using the .example domain are placeholders.
           </p>
-          <p className="shrink-0 text-xs text-mist/80">© {year} PROOVA. All rights reserved.</p>
+          <p className="shrink-0 text-xs text-mist/80">© {year} axora. All rights reserved.</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ export default function Footer() {
         aria-hidden="true"
         className="wordmark pointer-events-none -mb-[0.18em] text-center text-[clamp(5rem,22vw,19rem)] select-none"
       >
-        PROOVA
+        axora
       </p>
     </footer>
   );

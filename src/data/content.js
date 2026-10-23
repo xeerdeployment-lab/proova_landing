@@ -18,7 +18,7 @@ export const principles = [
   },
   {
     title: "A calmer standard",
-    body: "PROOVA is designed to feel precise and trustworthy, with room for the facts instead of pressure.",
+    body: "proova is designed to feel precise and trustworthy, with room for the facts instead of pressure.",
   },
 ];
 
@@ -110,7 +110,7 @@ export const faqs = [
   },
   {
     id: "products",
-    question: "What products or services does PROOVA offer?",
+    question: "What products or services does proova offer?",
     answer:
       "They have not been published yet. Before anyone is asked to buy or recommend an offer, this site will name it, explain what it does, and state what a participant actually receives.",
   },
@@ -118,7 +118,7 @@ export const faqs = [
     id: "compensation",
     question: "How does the compensation structure work?",
     answer:
-      "It will be a written plan: the activity that qualifies, how a reward is calculated, and what is excluded. Until that document exists, PROOVA does not quote percentages, ranks, or example earnings. Recruitment by itself is not income.",
+      "It will be a written plan: the activity that qualifies, how a reward is calculated, and what is excluded. Until that document exists, proova does not quote percentages, ranks, or example earnings. Recruitment by itself is not income.",
   },
   {
     id: "guaranteed",

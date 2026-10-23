@@ -28,7 +28,7 @@ export default function Opportunity() {
                     The business, stated <span className="serif-accent text-iris">before</span> you participate.
                   </>
                 }
-                description="PROOVA will explain the offer, the requirements, and the earning structure in public. Those details are not invented here."
+                description="axora will explain the offer, the requirements, and the earning structure in public. Those details are not invented here."
               />
               <motion.aside
                 className="mt-8 flex gap-3 border border-amber-300/30 bg-amber-300/[0.06] p-5 text-sm leading-relaxed text-snow"
@@ -104,7 +104,7 @@ export default function Opportunity() {
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-mist sm:text-base">
                 The compensation structure will be published as a clear schedule of qualifying
-                activity and possible rewards. Until that document exists, PROOVA does not
+                activity and possible rewards. Until that document exists, axora does not
                 describe ranks, percentages, or example payouts. Recruitment alone is not income.
               </p>
 

@@ -1,5 +1,5 @@
 /**
- * Stated PROOVA plan values used by the dashboard preview.
+ * Stated proova plan values used by the dashboard preview.
  * Unconfirmed relationships stay flagged and are not turned into payouts.
  * A future backend owns eligibility, calculation, and settlement.
  */

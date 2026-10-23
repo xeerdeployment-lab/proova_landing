@@ -18,10 +18,7 @@ const headline = [
   [{ text: "in view.", keep: true, className: "text-cyan" }],
 ];
 
-/**
- * Two-column hero: copy on the left, and on the right a HUD frame around the 3D Proova emblem
- * (rendered by the page-level stage behind this section; see three/Stage.jsx).
- */
+
 export default function Hero() {
   const reduce = useReducedMotion();
   const sectionRef = useRef(null);
@@ -77,7 +74,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: 0.85 }}
           >
-            PROOVA is a community business platform built around clarity — a precise member
+            Axora is a community business platform built around clarity — a precise member
             dashboard for your stake, network, and ledger, and a plan you can read before you
             participate. Progress depends on your activity. Income is never guaranteed.
           </motion.p>

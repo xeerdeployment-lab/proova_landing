@@ -14,7 +14,7 @@ export default function Logo({ className = "", markOnly = false, variant = "site
         </svg>
         {markOnly ? null : (
           <span className="flex min-w-0 flex-col leading-none">
-            <span className="text-[0.92rem] font-semibold tracking-[0.28em] text-snow">PROOVA</span>
+            <span className="text-[0.92rem] font-semibold tracking-[0.28em] text-snow">Axora</span>
             <span className="mt-1.5 text-[0.58rem] font-medium tracking-[0.24em] text-gold">MEMBER</span>
           </span>
         )}
@@ -39,7 +39,7 @@ export default function Logo({ className = "", markOnly = false, variant = "site
       </svg>
       {markOnly ? null : (
         <span className="flex flex-col leading-none">
-          <span className="font-head text-[1.02rem] font-bold tracking-[0.2em] text-snow">PROOVA</span>
+          <span className="font-head text-[1.02rem] font-bold tracking-[0.2em] text-snow">Axora</span>
           {tagline ? <span className="hud-label mt-1.5 text-[0.52rem] tracking-[0.3em] text-cyan/80">{tagline}</span> : null}
         </span>
       )}

@@ -18,7 +18,7 @@ export default function Privacy() {
         <h2 className="text-xl font-semibold text-snow">This preview site</h2>
         <p className="mt-3">
           The sign-in and get-started forms run in your browser. They do not transmit what you
-          type to PROOVA. Closing or refreshing the page clears those entries. This marketing
+          type to Axora. Closing or refreshing the page clears those entries. This marketing
           site is not set up to drop advertising or analytics cookies.
         </p>
       </section>
@@ -34,7 +34,7 @@ export default function Privacy() {
       <section>
         <h2 className="text-xl font-semibold text-snow">Contact</h2>
         <p className="mt-3">
-          A privacy contact has not been appointed. The address hello@proova.example is a
+          A privacy contact has not been appointed. The address hello@axora.example is a
           placeholder and is not monitored.
         </p>
       </section>

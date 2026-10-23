@@ -4,20 +4,20 @@ import { stagger } from "../lib/motion";
 import FeatureCard from "./FeatureCard";
 import SectionHeading from "./SectionHeading";
 
-export default function WhyProova() {
+export default function Whyproova() {
   const reduce = useReducedMotion();
 
   return (
     <section id="features" data-act="features" className="section">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Why PROOVA"
+          eyebrow="Why Axora"
           title={
             <>
               Designed for people who want the <span className="serif-accent text-iris">full picture.</span>
             </>
           }
-          description="Four commitments shape the experience. They describe how PROOVA intends to behave — not what a participant will earn."
+          description="Four commitments shape the experience. They describe how Axora intends to behave — not what a participant will earn."
         />
         <motion.div
           className="mt-14 grid gap-4 lg:grid-cols-6"

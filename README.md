@@ -1,6 +1,6 @@
-# PROOVA
+# proova
 
-Premium marketing site for the PROOVA community business platform.
+Premium marketing site for the proova community business platform.
 
 ```bash
 npm install

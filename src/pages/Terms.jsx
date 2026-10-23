@@ -17,7 +17,7 @@ export default function Terms() {
       <section>
         <h2 className="text-xl font-semibold text-snow">What the site is</h2>
         <p className="mt-3">
-          PROOVA’s public site introduces a community business opportunity. It is information.
+          Axora’s public site introduces a community business opportunity. It is information.
           It is not an offer of employment, an investment, or a promise of income. Products,
           services, fees, and the compensation plan will be published before participation opens.
         </p>
@@ -41,7 +41,7 @@ export default function Terms() {
       <section>
         <h2 className="text-xl font-semibold text-snow">Contact</h2>
         <p className="mt-3">
-          Legal notices cannot be served through hello@proova.example. That address is a
+          Legal notices cannot be served through hello@axora.example. That address is a
           placeholder and is not monitored.
         </p>
       </section>
