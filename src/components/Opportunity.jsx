@@ -31,13 +31,13 @@ export default function Opportunity() {
                 description="PROOVA will explain the offer, the requirements, and the earning structure in public. Those details are not invented here."
               />
               <motion.aside
-                className="mt-8 flex gap-3 rounded-[1.4rem] border border-gold/25 bg-gold/[0.07] p-5 text-sm leading-relaxed text-snow"
+                className="mt-8 flex gap-3 border border-amber-300/30 bg-amber-300/[0.06] p-5 text-sm leading-relaxed text-snow"
                 variants={fadeUp}
                 initial={reduce ? "visible" : "hidden"}
                 whileInView="visible"
                 viewport={viewport}
               >
-                <AlertCircle size={18} className="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+                <AlertCircle size={18} className="mt-0.5 shrink-0 text-amber-300" aria-hidden="true" />
                 <span>
                   Earnings are not guaranteed. They depend on actual business activity, customer
                   demand, and the applicable plan terms. A person may participate and earn nothing.
@@ -55,7 +55,7 @@ export default function Opportunity() {
           >
             <SpotlightCard as="article" variants={fadeUp} className="panel p-6 sm:p-8">
               <CardKicker icon={Package}>Products and services</CardKicker>
-              <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-snow">To be published</h3>
+              <h3 className="mt-4 text-2xl font-head font-bold tracking-[-0.01em] text-snow uppercase">To be published</h3>
               <p className="mt-3 text-sm leading-relaxed text-mist sm:text-base">
                 Specific products or services have not been named on this site. When they are,
                 each one will be described: what it is, who it is for, and what a participant
@@ -65,7 +65,7 @@ export default function Opportunity() {
 
             <SpotlightCard as="article" variants={fadeUp} className="panel p-6 sm:p-8">
               <CardKicker icon={ClipboardList}>Participation</CardKicker>
-              <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-snow">Requirements come first</h3>
+              <h3 className="mt-4 text-2xl font-head font-bold tracking-[-0.01em] text-snow uppercase">Requirements come first</h3>
               <p className="mt-3 text-sm leading-relaxed text-mist sm:text-base">
                 Enrollment steps, eligibility, and any fees will be listed in full before a
                 person is asked to join. This page is not an offer to enroll.
@@ -81,7 +81,7 @@ export default function Opportunity() {
                   <motion.li
                     key={item}
                     variants={fadeUp}
-                    className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-3 text-sm text-snow"
+                    className="flex items-start gap-3 border border-cyan/10 bg-white/[0.02] px-3.5 py-3 text-sm text-snow"
                   >
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
                       <Check size={12} strokeWidth={2.6} aria-hidden="true" />
@@ -96,10 +96,10 @@ export default function Opportunity() {
               as="article"
               id="compensation"
               variants={fadeUp}
-              className="panel scroll-mt-32 bg-[radial-gradient(120%_80%_at_0%_0%,rgba(99,91,255,0.16),transparent_60%),#0a0f1e] p-6 sm:p-8"
+              className="panel scroll-mt-32 bg-[radial-gradient(120%_80%_at_0%_0%,rgba(0,229,242,0.16),transparent_60%),#070d13] p-6 sm:p-8"
             >
               <CardKicker icon={Scale}>Compensation plan</CardKicker>
-              <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-snow">
+              <h3 className="mt-4 text-2xl font-head font-bold tracking-[-0.01em] text-snow uppercase">
                 A schedule, <span className="serif-accent text-iris">not a story.</span>
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-mist sm:text-base">
@@ -112,13 +112,13 @@ export default function Opportunity() {
                 {flow.map((item, index) => (
                   <li key={item.title} className="contents">
                     <motion.div
-                      className="rounded-2xl border border-white/10 bg-navy/70 p-4"
+                      className=" border border-cyan/15 bg-navy/70 p-4"
                       initial={reduce ? false : { opacity: 0, y: 12 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={viewport}
                       transition={{ duration: 0.6, ease, delay: 0.15 + index * 0.25 }}
                     >
-                      <p className="serif-accent text-lg text-gold/90">0{index + 1}</p>
+                      <p className="hud-label text-lime">0{index + 1}</p>
                       <p className="mt-1 text-sm font-semibold text-snow">{item.title}</p>
                       <p className="mt-1 text-xs leading-relaxed text-mist">{item.body}</p>
                     </motion.div>
@@ -149,8 +149,8 @@ export default function Opportunity() {
 
 function CardKicker({ icon: Icon, children }) {
   return (
-    <p className="flex items-center gap-2.5 text-xs font-semibold tracking-[0.18em] text-gold uppercase">
-      <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-iris">
+    <p className="flex items-center gap-2.5 hud-label text-cyan">
+      <span className="flex h-7 w-7 items-center justify-center border border-cyan/15 bg-cyan/[0.03] text-iris">
         <Icon size={14} strokeWidth={1.8} aria-hidden="true" />
       </span>
       {children}

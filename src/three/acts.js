@@ -6,6 +6,7 @@
  * layout   — node formation (see networkModel.js): 0 network, 1 expanded, 2 columns, 3 tiers, 4 converged
  * cam/look — camera position and target in world units
  * shift    — world offset [x, y] on wide screens; `narrowShift` replaces it on portrait screens
+ * nebula   — strength of the backdrop clouds and key light
  * dim      — opacity of the navy veil over the canvas (0 = full scene, 1 = hidden)
  */
 export const ACTS = {
@@ -13,7 +14,7 @@ export const ACTS = {
     layout: 0,
     cam: [0, 0.35, 12],
     look: [0, 0, 0],
-    shift: [3.25, 0],
+    shift: [3.7, 0.1],
     narrowShift: [0, -3.1],
     dim: 0,
     narrowDim: 0.18,
@@ -23,6 +24,7 @@ export const ACTS = {
     grid: 1,
     gridY: -4.4,
     columns: 0,
+    nebula: 1,
   },
   intro: {
     layout: 1,
@@ -38,6 +40,7 @@ export const ACTS = {
     grid: 0.45,
     gridY: -4.4,
     columns: 0,
+    nebula: 0.85,
   },
   platform: {
     layout: 2,
@@ -52,6 +55,7 @@ export const ACTS = {
     grid: 1,
     gridY: -2.6,
     columns: 1,
+    nebula: 0.55,
   },
   path: {
     layout: 3,
@@ -65,6 +69,7 @@ export const ACTS = {
     grid: 0.6,
     gridY: -3.6,
     columns: 0,
+    nebula: 0.75,
   },
   features: {
     layout: 1,
@@ -80,6 +85,7 @@ export const ACTS = {
     grid: 0.35,
     gridY: -4.4,
     columns: 0,
+    nebula: 0.7,
   },
   network: {
     layout: 0,
@@ -93,6 +99,7 @@ export const ACTS = {
     grid: 0,
     gridY: -4.4,
     columns: 0,
+    nebula: 0.4,
   },
   analytics: {
     layout: 2,
@@ -107,6 +114,7 @@ export const ACTS = {
     grid: 1,
     gridY: -2.6,
     columns: 1,
+    nebula: 0.6,
   },
   details: {
     layout: 0,
@@ -120,6 +128,7 @@ export const ACTS = {
     grid: 0.2,
     gridY: -4.4,
     columns: 0,
+    nebula: 0.5,
   },
   finale: {
     layout: 4,
@@ -130,12 +139,16 @@ export const ACTS = {
     dim: 0,
     lines: 1,
     spin: 0.8,
-    core: 1.7,
+    core: 1.35,
     grid: 0.8,
     gridY: -3.4,
     columns: 0,
+    nebula: 1.3,
   },
 };
+
+/** Scalar act properties eased by the stage rig. */
+export const STAGE_KEYS = ["lines", "spin", "core", "grid", "gridY", "columns", "nebula"];
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -160,6 +173,7 @@ export function sampleActs(names, position, narrow, out) {
   out.layoutA = a.act.layout;
   out.layoutB = b.act.layout;
   out.blend = t;
+  out.index = index;
   for (let i = 0; i < 3; i += 1) {
     out.cam[i] = lerp(a.act.cam[i], b.act.cam[i], t);
     out.look[i] = lerp(a.act.look[i], b.act.look[i], t);
@@ -167,7 +181,7 @@ export function sampleActs(names, position, narrow, out) {
   out.shift[0] = lerp(a.shift[0], b.shift[0], t);
   out.shift[1] = lerp(a.shift[1], b.shift[1], t);
   out.dim = lerp(a.dim, b.dim, t);
-  for (const key of ["lines", "spin", "core", "grid", "gridY", "columns"]) {
+  for (const key of STAGE_KEYS) {
     out[key] = lerp(a.act[key], b.act[key], t);
   }
   // Pointer interaction belongs to the hero only.
@@ -190,6 +204,8 @@ export function createActSample() {
     grid: 1,
     gridY: -4.4,
     columns: 0,
+    nebula: 1,
+    index: 0,
     interactive: true,
   };
 }

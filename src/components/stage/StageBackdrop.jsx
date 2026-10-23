@@ -29,6 +29,8 @@ export default function StageBackdrop() {
     let tops = [];
     let frame = 0;
     let loop = "";
+    let lastY = window.scrollY;
+    let lastAt = performance.now();
 
     const measure = () => {
       const markers = [...document.querySelectorAll("[data-act]")];
@@ -46,6 +48,13 @@ export default function StageBackdrop() {
         position += smoothstep(tops[index] - vh * 0.45, tops[index] + vh * 0.1, probe);
       }
       stage.actPos = position;
+
+      const now = performance.now();
+      const elapsed = Math.max(16, now - lastAt);
+      stage.velocity = (window.scrollY - lastY) / vh / (elapsed / 1000);
+      stage.velocityAt = now;
+      lastY = window.scrollY;
+      lastAt = now;
 
       const narrow = window.innerWidth < 1024 || window.innerWidth / vh < 1.1;
       const { dim } = sampleActs(stage.actNames, position, narrow, sample);

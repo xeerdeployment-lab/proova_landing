@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-export default function Logo({ className = "", markOnly = false, variant = "site" }) {
+export default function Logo({ className = "", markOnly = false, variant = "site", tagline = "" }) {
   const gradientId = `proova-mark-${useId().replace(/:/g, "")}`;
 
   if (variant === "dashboard") {
@@ -23,26 +23,26 @@ export default function Logo({ className = "", markOnly = false, variant = "site
   }
 
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" className="shrink-0">
-        <rect width="32" height="32" rx="9" fill="rgba(99,91,255,0.14)" />
-        <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="8.25" stroke={`url(#${gradientId})`} strokeWidth="1.25" />
-        <path
-          d="M10.5 23V9.5h6.15a5.35 5.35 0 0 1 0 10.7H10.5"
-          stroke="#F8FAFC"
-          strokeWidth="1.7"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle cx="23.4" cy="8.8" r="2.05" fill="#D8BD83" />
+    <span className={`inline-flex items-center gap-3 ${className}`}>
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true" className="shrink-0 drop-shadow-[0_0_10px_rgba(0,229,242,0.35)]">
+        <path d="M17 1.5 30.4 9.25v15.5L17 32.5 3.6 24.75V9.25L17 1.5Z" fill="rgba(0,229,242,0.08)" stroke={`url(#${gradientId})`} strokeWidth="1.3" />
+        <path d="M17 6.2 26.35 11.6v10.8L17 27.8 7.65 22.4V11.6L17 6.2Z" stroke="rgba(0,229,242,0.25)" strokeWidth="0.8" />
+        <path d="M13 23.5V10.5h5.2a4.3 4.3 0 0 1 0 8.6H13" stroke="#F4F7FB" strokeWidth="1.9" strokeLinecap="square" strokeLinejoin="miter" />
+        <rect x="19.6" y="20.6" width="3" height="3" fill="#A8FF00" />
         <defs>
-          <linearGradient id={gradientId} x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#635BFF" />
-            <stop offset="1" stopColor="#D8BD83" />
+          <linearGradient id={gradientId} x1="3" y1="2" x2="31" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#00E5F2" />
+            <stop offset="0.55" stopColor="#00F5D4" />
+            <stop offset="1" stopColor="#A8FF00" />
           </linearGradient>
         </defs>
       </svg>
-      {markOnly ? null : <span className="text-[0.95rem] font-semibold tracking-[0.22em] text-snow">PROOVA</span>}
+      {markOnly ? null : (
+        <span className="flex flex-col leading-none">
+          <span className="font-head text-[1.02rem] font-bold tracking-[0.2em] text-snow">PROOVA</span>
+          {tagline ? <span className="hud-label mt-1.5 text-[0.52rem] tracking-[0.3em] text-cyan/80">{tagline}</span> : null}
+        </span>
+      )}
     </span>
   );
 }

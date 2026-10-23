@@ -43,8 +43,8 @@ export default function GetStarted() {
     <PageEnter>
       <div className="container-page grid items-center gap-12 pt-32 pb-24 lg:grid-cols-2">
         <div>
-          <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">Introduction</p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">
+          <p className="eyebrow">Introduction</p>
+          <h1 className="heading-hud mt-6 text-4xl leading-[0.95] sm:text-6xl">
             Start with a conversation, not a commitment.
           </h1>
           <p className="mt-5 max-w-md text-base leading-relaxed text-mist sm:text-lg">
@@ -52,7 +52,7 @@ export default function GetStarted() {
             Nothing is transmitted, and submitting it does not enroll you.
           </p>
           {referralPreview ? (
-            <p className="mt-6 max-w-md rounded-2xl border border-gold/30 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-snow">
+            <p className="mt-6 max-w-md border border-amber-300/30 bg-amber-300/[0.06] px-4 py-3 text-sm leading-relaxed text-snow">
               Referral preview code <span className="font-semibold">{referralPreview}</span>. This page still does not submit or enroll anyone.
             </p>
           ) : null}
@@ -65,9 +65,9 @@ export default function GetStarted() {
         </div>
 
         {done ? (
-          <div role="status" className="glass rounded-[1.75rem] p-6 sm:p-8">
-            <p className="text-xs font-semibold tracking-[0.18em] text-gold uppercase">Preview only</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Nothing was sent.</h2>
+          <div role="status" className="glass p-6 sm:p-8">
+            <p className="hud-label text-cyan">Preview only</p>
+            <h2 className="heading-hud mt-3 text-3xl">Nothing was sent.</h2>
             <p className="mt-4 text-sm leading-relaxed text-mist sm:text-base">
               The form accepted your entries locally so you can see the path. PROOVA did not
               receive them, and no account was created. When registration opens, this step will
@@ -84,7 +84,7 @@ export default function GetStarted() {
             </Button>
           </div>
         ) : (
-          <form onSubmit={onSubmit} noValidate className="glass rounded-[1.75rem] p-6 sm:p-8">
+          <form onSubmit={onSubmit} noValidate className="glass p-6 sm:p-8">
             <div>
               <label htmlFor="start-name" className="text-sm font-medium text-snow">
                 Full name

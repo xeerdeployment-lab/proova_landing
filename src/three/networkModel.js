@@ -6,8 +6,8 @@
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 
 export const LEVEL_SIZE = [0, 0.17, 0.115, 0.08];
-export const LEVEL_COLOR = ["#ffffff", "#8b84ff", "#4f8cff", "#5ad7f2"];
-export const ACCENT_COLOR = "#34d399";
+export const LEVEL_COLOR = ["#ffffff", "#a8ff00", "#00e5f2", "#00b8d4"];
+export const ACCENT_COLOR = "#35f56d";
 const LEVEL_LABEL = ["Core", "Level 1 · direct connection", "Level 2", "Level 3"];
 
 function random(seed) {
@@ -125,13 +125,34 @@ export function buildNetwork({ l2PerL1, leafPerL2 }) {
     write(layouts[3], node.index, Math.cos(angle) * tierR[node.level], tierY[node.level], Math.sin(angle) * tierR[node.level]);
   });
 
-  // 4 — converged shell hugging the core
-  nodes.forEach((node, index) => {
-    const y = 1 - ((index + 0.5) / count) * 2;
-    const r = Math.sqrt(1 - y * y);
-    const theta = index * GOLDEN;
-    const radius = 1.42 + (node.level - 1) * 0.06;
-    write(layouts[4], index, Math.cos(theta) * r * radius, y * radius, Math.sin(theta) * r * radius);
+  // 4 — orrery: each level on its own tilted orbit, children fanned beside their parent
+  const orbit = [0, 1.8, 2.55, 3.3];
+  const tilt = [0, 0.38, -0.26, 0.3];
+  const roll = [0, -0.12, 0.16, -0.06];
+  const angle = new Float32Array(count);
+  const siblings = new Map();
+  nodes.forEach((node) => {
+    const rank = siblings.get(node.parent) ?? 0;
+    siblings.set(node.parent, rank + 1);
+    if (node.level === 1) {
+      angle[node.index] = (node.index / directs) * Math.PI * 2;
+    } else {
+      const parent = nodes[node.parent];
+      const span = (Math.PI * 2) / (directs * (node.level === 2 ? l2PerL1 : l2PerL1 * leafPerL2));
+      angle[node.index] = angle[node.parent] + (rank - (parent.children - 1) / 2) * span;
+    }
+    const r = orbit[node.level];
+    const x = Math.cos(angle[node.index]) * r;
+    const z0 = Math.sin(angle[node.index]) * r;
+    const y = z0 * Math.sin(tilt[node.level]);
+    const z = z0 * Math.cos(tilt[node.level]);
+    write(
+      layouts[4],
+      node.index,
+      x * Math.cos(roll[node.level]) - y * Math.sin(roll[node.level]),
+      x * Math.sin(roll[node.level]) + y * Math.cos(roll[node.level]),
+      z,
+    );
   });
 
   return { nodes, layouts, barHeights, floor };

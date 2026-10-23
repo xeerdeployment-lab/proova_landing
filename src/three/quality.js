@@ -28,7 +28,7 @@ export function getTier() {
 }
 
 export const tierConfig = {
-  high: { dpr: [1, 1.75], l2PerL1: 3, leafPerL2: 2, dust: 900, floaters: 6, flowsPerEdge: 2, segments: 48 },
-  medium: { dpr: [1, 1.5], l2PerL1: 3, leafPerL2: 1, dust: 520, floaters: 4, flowsPerEdge: 1, segments: 32 },
-  low: { dpr: [1, 1.5], l2PerL1: 2, leafPerL2: 1, dust: 260, floaters: 3, flowsPerEdge: 1, segments: 24 },
+  high: { dpr: [1, 1.75], l2PerL1: 3, leafPerL2: 2, dust: 900, constellations: 9, flowsPerEdge: 2, segments: 48 },
+  medium: { dpr: [1, 1.5], l2PerL1: 3, leafPerL2: 1, dust: 520, constellations: 6, flowsPerEdge: 1, segments: 32 },
+  low: { dpr: [1, 1.5], l2PerL1: 2, leafPerL2: 1, dust: 260, constellations: 4, flowsPerEdge: 1, segments: 24 },
 };

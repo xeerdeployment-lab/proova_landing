@@ -32,16 +32,21 @@ export default function Layout() {
   }, [pathname, hash]);
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-navy text-snow">
+    <div className="site relative min-h-screen overflow-x-clip bg-navy text-snow">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[70] focus:rounded-full focus:bg-snow focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[70] focus:bg-snow focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy"
       >
         Skip to content
       </a>
       <ScrollProgress />
       <Navbar />
-      {pathname === "/" ? <StageBackdrop /> : null}
+      <div aria-hidden="true" className="site-atmosphere pointer-events-none fixed inset-0 z-0" />
+      {pathname === "/" ? (
+        <StageBackdrop />
+      ) : (
+        <div aria-hidden="true" className="bg-grid pointer-events-none fixed inset-0 z-0 opacity-70" />
+      )}
       <main id="main" className="relative z-10">
         <Outlet />
       </main>

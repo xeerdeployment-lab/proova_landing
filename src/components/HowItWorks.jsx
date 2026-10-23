@@ -33,14 +33,14 @@ export default function HowItWorks() {
           {/* Desktop track */}
           <div aria-hidden="true" className="absolute top-7 right-[16.66%] left-[16.66%] hidden h-px bg-white/10 lg:block">
             <motion.div
-              className="h-full origin-left bg-gradient-to-r from-royal via-iris to-cyan"
+              className="h-full origin-left bg-gradient-to-r from-cyan via-turq to-lime"
               style={{ scaleX: reduce ? 1 : progress }}
             />
           </div>
           {/* Mobile track */}
           <div aria-hidden="true" className="absolute top-2 bottom-2 left-7 w-px bg-white/10 lg:hidden">
             <motion.div
-              className="h-full w-full origin-top bg-gradient-to-b from-royal via-iris to-cyan"
+              className="h-full w-full origin-top bg-gradient-to-b from-cyan via-turq to-lime"
               style={{ scaleY: reduce ? 1 : progress }}
             />
           </div>
@@ -69,17 +69,17 @@ function Step({ step, index, progress, reduce }) {
 
   return (
     <motion.li variants={fadeUp} className="relative flex gap-6 lg:flex-col lg:items-center lg:text-center">
-      <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-ink">
+      <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center border border-cyan/15 bg-ink">
         <motion.span
           aria-hidden="true"
-          className="absolute inset-0 rounded-2xl border border-iris/60 bg-royal/20 shadow-[0_0_30px_-4px_rgba(99,91,255,0.7)]"
+          className="absolute inset-0 border border-iris/60 bg-royal/20 shadow-[0_0_30px_-4px_rgba(0,229,242,0.7)]"
           style={{ opacity: reduce ? 1 : lit }}
         />
         <Icon size={20} strokeWidth={1.6} className="relative text-snow" aria-hidden="true" />
       </div>
-      <TiltCard className="glass-deep min-w-0 flex-1 rounded-[1.6rem] p-6 sm:p-7 lg:mt-8 lg:w-full">
-        <p className="tilt-layer serif-accent text-2xl text-gold/90 [--depth:14px]">{step.number}</p>
-        <h3 className="tilt-layer mt-2 text-2xl font-semibold tracking-[-0.03em] text-snow [--depth:8px]">{step.title}</h3>
+      <TiltCard className="glass-deep min-w-0 flex-1 p-6 sm:p-7 lg:mt-8 lg:w-full">
+        <p className="tilt-layer hud-label text-lime [--depth:14px]">{step.number}</p>
+        <h3 className="tilt-layer mt-2 text-2xl font-head font-bold tracking-[-0.01em] text-snow uppercase [--depth:8px]">{step.title}</h3>
         <p className="mt-3 max-w-sm text-sm leading-relaxed text-mist sm:text-base lg:mx-auto">{step.body}</p>
       </TiltCard>
     </motion.li>

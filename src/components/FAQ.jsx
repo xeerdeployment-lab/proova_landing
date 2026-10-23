@@ -76,8 +76,8 @@ function AccordionItem({ item, index, open, baseId, onToggle }) {
   return (
     <motion.div
       variants={fadeUp}
-      className={`mb-3 rounded-[1.25rem] border transition-colors duration-300 ${
-        open ? "border-iris/30 bg-white/[0.035]" : "border-white/[0.07] bg-white/[0.015] hover:border-white/15"
+      className={`mb-3 border transition-colors duration-300 ${
+        open ? "border-iris/30 bg-white/[0.035]" : "border-cyan/10 bg-white/[0.015] hover:border-white/15"
       }`}
     >
       <h3>
@@ -89,13 +89,13 @@ function AccordionItem({ item, index, open, baseId, onToggle }) {
           aria-controls={panelId}
           onClick={onToggle}
         >
-          <span className={`num text-xs font-semibold transition-colors ${open ? "text-iris" : "text-mist"}`}>
+          <span className={`hud-label transition-colors ${open ? "text-iris" : "text-mist"}`}>
             {String(index + 1).padStart(2, "0")}
           </span>
-          <span className="flex-1 text-base font-medium tracking-[-0.02em] text-snow sm:text-lg">{item.question}</span>
+          <span className="flex-1 font-head text-base font-semibold tracking-[-0.01em] text-snow sm:text-lg">{item.question}</span>
           <span
-            className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 ${
-              open ? "border-iris/50 bg-royal/20" : "border-white/10"
+            className={`relative flex h-8 w-8 shrink-0 items-center justify-center border transition-colors duration-300 ${
+              open ? "border-iris/50 bg-royal/20" : "border-cyan/15"
             }`}
             aria-hidden="true"
           >

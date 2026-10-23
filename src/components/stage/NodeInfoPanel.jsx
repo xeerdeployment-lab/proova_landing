@@ -15,16 +15,16 @@ export default function NodeInfoPanel() {
 
   return (
     <div ref={register} data-visible="false" data-side="right" className="node-panel pointer-events-none fixed top-0 left-0 z-30">
-      <div className="node-panel-card glass w-64 rounded-2xl p-4" data-no-stage role="status" aria-live="polite">
+      <div className="node-panel-card glass w-64 p-4" data-no-stage role="status" aria-live="polite">
         {node ? (
           <>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="flex items-center gap-2 text-[0.62rem] font-semibold tracking-[0.18em] text-mist uppercase">
+                <p className="flex items-center gap-2 hud-label text-mist">
                   <span className="h-2 w-2 rounded-full" style={{ background: node.color, boxShadow: `0 0 12px ${node.color}` }} />
                   {node.role}
                 </p>
-                <p className="mt-2 text-lg font-semibold tracking-[-0.02em] text-snow">{node.title}</p>
+                <p className="mt-2 text-lg font-head font-bold tracking-[-0.01em] text-snow uppercase">{node.title}</p>
               </div>
               <button
                 type="button"
@@ -35,7 +35,7 @@ export default function NodeInfoPanel() {
                 <span className="sr-only">Close node details</span>
               </button>
             </div>
-            <dl className="mt-3 divide-y divide-white/[0.07] border-y border-white/[0.07] text-xs">
+            <dl className="mt-3 divide-y divide-cyan/10 border-y border-cyan/10 text-xs">
               <div className="flex justify-between py-2">
                 <dt className="text-mist">Depth</dt>
                 <dd className="text-snow">Level {node.level}</dd>

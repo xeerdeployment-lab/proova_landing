@@ -10,7 +10,7 @@ export default function FinalCTA() {
 
   return (
     <section data-act="finale" className="relative flex min-h-svh flex-col justify-end overflow-hidden px-5 pt-[46svh] pb-20 sm:px-8 md:pb-28">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-[radial-gradient(70%_80%_at_50%_100%,rgba(5,7,15,0.85),transparent_75%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-[radial-gradient(70%_80%_at_50%_100%,rgba(3,7,10,0.85),transparent_75%)]" />
 
       <motion.div
         className="relative mx-auto max-w-3xl text-center"
@@ -24,9 +24,9 @@ export default function FinalCTA() {
         </motion.p>
         <motion.h2
           variants={fadeUp}
-          className="mt-6 text-[clamp(2.8rem,7vw,6rem)] leading-[0.95] font-semibold tracking-[-0.055em] text-snow [text-shadow:0_4px_50px_rgba(5,7,15,0.8)]"
+          className="heading-hud mt-6 text-[clamp(2.6rem,6.5vw,5.6rem)] leading-[0.92] text-snow [text-shadow:0_4px_50px_rgba(3,7,10,0.8)]"
         >
-          Start your <span className="serif-accent text-spectrum">journey.</span>
+          Start your <span className="text-hud">journey.</span>
         </motion.h2>
         <motion.p variants={fadeUp} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-mist sm:text-lg">
           Begin with the published facts. Participation opens only when the offer and the

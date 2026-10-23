@@ -5,7 +5,7 @@ import { ease } from "../../lib/motion";
  * Word-by-word masked reveal for display headings.
  * `lines` is an array of lines; each line is an array of `{ text, className }` segments.
  */
-export default function TextReveal({ lines, as = "h1", className = "", delay = 0, stagger = 0.06 }) {
+export default function TextReveal({ lines, as = "h1", className = "", delay = 0, stagger = 0.06, after = null }) {
   const reduce = useReducedMotion();
   const Tag = as;
   let order = 0;
@@ -40,6 +40,7 @@ export default function TextReveal({ lines, as = "h1", className = "", delay = 0
                 </span>
               );
             })}
+            {lineIndex === lines.length - 1 ? after : null}
           </span>
         );
       })}

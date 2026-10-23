@@ -64,7 +64,7 @@ export default function PlatformShowcase() {
           role="tablist"
           aria-label="Dashboard views"
           onKeyDown={onKeyDown}
-          className="mt-12 grid w-full grid-cols-4 gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1 sm:inline-flex sm:w-auto"
+          className="mt-12 grid w-full grid-cols-4 gap-1 border border-cyan/20 bg-cyan/[0.03] p-1 sm:inline-flex sm:w-auto"
         >
           {platformViews.map((view) => {
             const selected = view.id === activeId;
@@ -78,14 +78,14 @@ export default function PlatformShowcase() {
                 aria-controls={`${baseId}-panel`}
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActiveId(view.id)}
-                className={`relative isolate rounded-full px-1 py-2 text-xs font-medium whitespace-nowrap transition-colors duration-300 sm:px-5 sm:text-sm ${
-                  selected ? "text-white" : "text-mist hover:text-snow"
+                className={`hud-label relative isolate px-1 py-2.5 text-[0.62rem] whitespace-nowrap transition-colors duration-300 sm:px-5 sm:text-sm ${
+                  selected ? "font-semibold text-ink" : "text-mist hover:text-snow"
                 }`}
               >
                 {selected ? (
                   <motion.span
                     layoutId={`${baseId}-tab-pill`}
-                    className="absolute inset-0 -z-10 rounded-full bg-gradient-to-b from-[#7d76ff] to-[#5148f0] shadow-[0_8px_24px_-8px_rgba(99,91,255,0.8)]"
+                    className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan to-lime shadow-[0_0_20px_-4px_rgba(0,229,242,0.8)]"
                     transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 34 }}
                   />
                 ) : null}
@@ -111,7 +111,7 @@ export default function PlatformShowcase() {
               transition={{ duration: 0.4, ease }}
             >
               <div>
-                <h3 className="text-2xl leading-tight font-semibold tracking-[-0.03em] text-snow sm:text-3xl">
+                <h3 className="text-2xl leading-tight font-head font-bold tracking-[-0.01em] text-snow uppercase sm:text-3xl">
                   {active.title}
                 </h3>
                 <p className="mt-4 text-sm leading-relaxed text-mist sm:text-base">{active.body}</p>
@@ -134,7 +134,7 @@ export default function PlatformShowcase() {
           </AnimatePresence>
 
           <div className="lg:col-span-8">
-            <div className="beam rounded-[1.4rem] shadow-float">
+            <div className="beam shadow-float">
               <WindowFrame path={`Member dashboard · ${active.label}`}>
                 <div className="relative min-h-[22rem] p-4 sm:p-6">
                   <AnimatePresence mode="wait" initial={false}>
@@ -190,15 +190,15 @@ function ViewMock({ id, model }) {
     return (
       <div>
         <div className="flex flex-wrap gap-2" aria-hidden="true">
-          <span className="rounded-full bg-royal/20 px-3 py-1 text-[0.7rem] font-medium text-iris">All categories</span>
+          <span className="bg-cyan/15 px-3 py-1 text-[0.7rem] font-medium text-iris">All categories</span>
           {transactionCategories
             .filter((category) => shown.includes(category.id))
             .map((category) => (
-              <span key={category.id} className="rounded-full border border-white/10 px-3 py-1 text-[0.7rem] text-mist">
+              <span key={category.id} className="border border-cyan/15 px-3 py-1 text-[0.7rem] text-mist">
                 {category.label}
               </span>
             ))}
-          <span className="ml-auto rounded-full border border-white/10 px-3 py-1 text-[0.7rem] text-mist">Export CSV</span>
+          <span className="ml-auto border border-cyan/15 px-3 py-1 text-[0.7rem] text-mist">Export CSV</span>
         </div>
         <div className="mt-4">
           <LedgerRows rows={model.transactions.slice(0, 6)} />
@@ -218,14 +218,14 @@ function ViewMock({ id, model }) {
         <div className="tile p-5">
           <p className="text-xs font-medium text-snow">Request a withdrawal</p>
           <div className="mt-4 space-y-3" aria-hidden="true">
-            <div className="h-11 rounded-xl border border-white/10 bg-white/[0.02]" />
-            <div className="h-11 rounded-xl border border-white/10 bg-white/[0.02]" />
-            <div className="h-10 w-40 rounded-full bg-gradient-to-b from-[#7d76ff] to-[#5148f0] opacity-80" />
+            <div className="h-11 border border-cyan/15 bg-white/[0.02]" />
+            <div className="h-11 border border-cyan/15 bg-white/[0.02]" />
+            <div className="h-10 w-40 bg-gradient-to-r from-cyan to-lime opacity-80" />
           </div>
         </div>
         <div className="tile p-5">
           <p className="text-xs font-medium text-snow">Stated lines</p>
-          <ul className="mt-3 divide-y divide-white/[0.06]">
+          <ul className="mt-3 divide-y divide-cyan/10">
             {lines.map(([line, state]) => (
               <li key={line} className="flex items-center justify-between py-2.5 text-xs">
                 <span className="text-mist">{line}</span>
@@ -234,7 +234,7 @@ function ViewMock({ id, model }) {
             ))}
             <li className="flex items-center justify-between py-2.5 text-xs">
               <span className="font-medium text-snow">Net payout</span>
-              <span className="rounded-full bg-white/[0.06] px-2 py-0.5 font-semibold text-mist">Not calculated</span>
+              <span className="bg-white/[0.06] px-2 py-0.5 font-semibold text-mist">Not calculated</span>
             </li>
           </ul>
         </div>
@@ -279,7 +279,7 @@ function ModuleGrid() {
   return (
     <div className="mt-20">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <h3 className="text-xl font-semibold tracking-[-0.03em] text-snow">
+        <h3 className="heading-hud text-xl font-head font-bold tracking-[-0.01em] text-snow uppercase">
           {dashboardNav.length} modules in the preview
         </h3>
         <Link to="/dashboard" className="text-sm text-iris transition-colors hover:text-snow">
@@ -297,14 +297,14 @@ function ModuleGrid() {
           const Icon = item.icon;
           return (
             <motion.li key={item.to} variants={fadeUp}>
-              <SpotlightCard className="h-full rounded-2xl border border-white/[0.07] bg-[#080c1b]/80 backdrop-blur-sm">
+              <SpotlightCard className="panel h-full">
                 <Link to={item.to} className="flex h-full flex-col gap-4 p-4">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-royal/15 text-iris">
+                  <span className="flex h-9 w-9 items-center justify-center bg-royal/15 text-iris">
                     <Icon size={17} strokeWidth={1.7} aria-hidden="true" />
                   </span>
                   <span>
                     <span className="block text-sm font-medium text-snow">{item.label}</span>
-                    <span className="mt-0.5 block text-[0.68rem] tracking-[0.14em] text-mist uppercase">{item.group}</span>
+                    <span className="mt-0.5 block hud-label text-mist">{item.group}</span>
                   </span>
                 </Link>
               </SpotlightCard>

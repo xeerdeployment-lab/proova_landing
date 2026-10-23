@@ -9,6 +9,9 @@ export const stage = {
   /** Fractional index into `actNames`, written by the backdrop on scroll. */
   actPos: 0,
   actNames: ["hero"],
+  /** Scroll speed in viewport heights per second, and when it was last measured. */
+  velocity: 0,
+  velocityAt: 0,
   /** Pointer in normalised device coordinates (-1..1), mouse only. */
   pointer: { x: 0, y: 0 },
   selected: null,

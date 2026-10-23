@@ -80,10 +80,10 @@ export default function Analytics() {
         </div>
 
         <div className="relative mt-14 grid gap-5 lg:grid-cols-12">
-          <TiltCard max={2.5} className="glass-deep rounded-[1.75rem] p-5 sm:p-7 lg:col-span-8">
+          <TiltCard max={2.5} className="glass-deep p-5 sm:p-7 lg:col-span-8">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-mist uppercase">Records on file</p>
+                <p className="hud-label text-mist">Records on file</p>
                 <p className="mt-1 text-sm text-snow">Cumulative sample records by week joined</p>
               </div>
               <SampleTag />
@@ -103,15 +103,15 @@ export default function Analytics() {
             whileInView="visible"
             viewport={viewport}
           >
-            <TiltCard as="article" variants={fadeUp} className="glass-deep rounded-[1.75rem] p-6">
-              <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-mist uppercase">Verification</p>
+            <TiltCard as="article" variants={fadeUp} className="glass-deep p-6">
+              <p className="hud-label text-mist">Verification</p>
               <VerifiedRing verified={data.verified} total={data.total} reduce={reduce} />
               <p className="mt-4 text-xs leading-relaxed text-mist">
                 {data.pending} sample records are still pending. A record counts only once it is verified.
               </p>
             </TiltCard>
-            <TiltCard as="article" variants={fadeUp} className="glass-deep rounded-[1.75rem] p-6">
-              <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-mist uppercase">Reward lines</p>
+            <TiltCard as="article" variants={fadeUp} className="glass-deep p-6">
+              <p className="hud-label text-mist">Reward lines</p>
               <p className="mt-3 text-sm text-snow">
                 <span className="text-3xl font-semibold tracking-[-0.04em]">{data.unconfirmed}</span> lines marked
               </p>
@@ -181,13 +181,13 @@ function GrowthChart({ points, reduce }) {
     >
       <defs>
         <linearGradient id={`${id}-line`} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#8b84ff" />
-          <stop offset="0.6" stopColor="#4f8cff" />
-          <stop offset="1" stopColor="#5ad7f2" />
+          <stop offset="0" stopColor="#00e5f2" />
+          <stop offset="0.6" stopColor="#0094b8" />
+          <stop offset="1" stopColor="#00e5f2" />
         </linearGradient>
         <linearGradient id={`${id}-area`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#4f8cff" stopOpacity="0.32" />
-          <stop offset="1" stopColor="#4f8cff" stopOpacity="0" />
+          <stop offset="0" stopColor="#0094b8" stopOpacity="0.32" />
+          <stop offset="1" stopColor="#0094b8" stopOpacity="0" />
         </linearGradient>
         <filter id={`${id}-glow`} x="-10%" y="-30%" width="120%" height="160%">
           <feGaussianBlur stdDeviation="5" />
@@ -247,8 +247,8 @@ function GrowthChart({ points, reduce }) {
           transition={{ duration: 0.5, ease, delay: 0.3 + index * 0.35 }}
           style={{ transformOrigin: `${x}px ${y}px` }}
         >
-          <circle cx={x} cy={y} r="9" fill="rgba(90,215,242,0.14)" />
-          <circle cx={x} cy={y} r="3.6" fill="#0a0f1e" stroke="#9be8ff" strokeWidth="1.6" />
+          <circle cx={x} cy={y} r="9" fill="rgba(0,229,242,0.14)" />
+          <circle cx={x} cy={y} r="3.6" fill="#070d13" stroke="#b8fff2" strokeWidth="1.6" />
           <text x={x} y={y - 14} textAnchor="middle" fontSize="11" fontWeight="600" fill="#f8fafc" aria-hidden="true">
             {points[index].value}
           </text>
@@ -266,11 +266,11 @@ function DepthBar({ row, max, index, reduce }) {
     <div ref={ref} className="tile p-4">
       <div className="flex items-baseline justify-between">
         <p className="text-xs text-mist">{row.label} records</p>
-        <p className="text-lg font-semibold tracking-[-0.03em] text-snow">{inView || reduce ? <CountUp value={row.value} /> : 0}</p>
+        <p className="text-lg font-head font-bold tracking-[-0.01em] text-snow uppercase">{inView || reduce ? <CountUp value={row.value} /> : 0}</p>
       </div>
       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
         <motion.div
-          className="h-full origin-left rounded-full bg-gradient-to-r from-royal via-[#4f8cff] to-cyan shadow-[0_0_14px_rgba(90,215,242,0.6)]"
+          className="h-full origin-left rounded-full bg-gradient-to-r from-royal via-[#0094b8] to-cyan shadow-[0_0_14px_rgba(0,229,242,0.6)]"
           style={{ width: `${(row.value / Math.max(1, max)) * 100}%` }}
           initial={reduce ? false : { scaleX: 0 }}
           animate={{ scaleX: inView || reduce ? 1 : 0 }}
@@ -294,7 +294,7 @@ function VerifiedRing({ verified, total, reduce }) {
         <defs>
           <linearGradient id={`${id}-ring`} x1="0" x2="1" y1="0" y2="1">
             <stop offset="0" stopColor="#34d399" />
-            <stop offset="1" stopColor="#5ad7f2" />
+            <stop offset="1" stopColor="#00e5f2" />
           </linearGradient>
         </defs>
         <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="9" />
@@ -328,13 +328,13 @@ function FloatMetric({ icon: Icon, label, value, accent = "text-snow" }) {
   const inView = useInView(ref, { once: true });
 
   return (
-    <div ref={ref} className="glass float-b rounded-2xl px-4 py-3 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.8)]">
-      <p className="flex items-center gap-2 text-[0.6rem] font-semibold tracking-[0.18em] text-gold uppercase">
+    <div ref={ref} className="glass float-b px-4 py-3 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.8)]">
+      <p className="flex items-center gap-2 hud-label text-gold">
         <Icon size={12} strokeWidth={1.8} aria-hidden="true" />
         {label}
       </p>
       <p className={`mt-1 text-2xl font-semibold tracking-[-0.04em] ${accent}`}>{inView ? <CountUp value={value} /> : 0}</p>
-      <p className="text-[0.6rem] tracking-[0.12em] text-mist uppercase">Sample</p>
+      <p className="hud-label text-mist">Sample</p>
     </div>
   );
 }

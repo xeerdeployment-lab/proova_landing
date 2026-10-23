@@ -26,10 +26,11 @@ export default function WhyProova() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
         >
-          {features.map((feature) => (
+          {features.map((feature, index) => (
             <FeatureCard
               key={feature.id}
               {...feature}
+              index={index}
               className={feature.featured || feature.wide ? "lg:col-span-4" : "lg:col-span-2"}
             />
           ))}

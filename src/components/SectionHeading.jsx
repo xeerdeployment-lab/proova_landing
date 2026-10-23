@@ -28,7 +28,7 @@ export default function SectionHeading({
       <motion.h2
         id={id}
         variants={fadeUp}
-        className="text-[clamp(2.2rem,4.8vw,4rem)] leading-[1.02] font-semibold tracking-[-0.045em] text-balance text-snow"
+        className="heading-hud text-[clamp(2rem,4.2vw,3.5rem)] leading-[1] text-balance text-snow"
       >
         {title}
       </motion.h2>

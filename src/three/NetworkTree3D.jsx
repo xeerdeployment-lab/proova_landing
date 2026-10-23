@@ -14,7 +14,7 @@ import {
 import { createEdgeMaterial, createGlowMaterial, createHaloMaterial } from "./materials";
 
 const SEGMENTS = 16;
-const COLORS = { self: "#d8bd83", verified: "#8b84ff", pending: "#5ad7f2" };
+const COLORS = { self: "#a8ff00", verified: "#00e5f2", pending: "#00f5d4" };
 
 /** WebGL view of the sample genealogy. Selection and expansion are owned by the section. */
 export default function NetworkTree3D({ people, layout, activeId, lineage, hoverId, labelsRef, reduce, onReady }) {
@@ -29,10 +29,10 @@ export default function NetworkTree3D({ people, layout, activeId, lineage, hover
         onReady?.(state);
       }}
     >
-      <ambientLight intensity={0.4} color="#7183ff" />
-      <directionalLight position={[-5, 6, 8]} intensity={1.4} color="#c3ccff" />
-      <directionalLight position={[5, 2, -8]} intensity={2} color="#8b5cf6" />
-      <pointLight position={[0, 1, 3]} intensity={10} color="#5ad7f2" distance={14} decay={1.6} />
+      <ambientLight intensity={0.4} color="#5fd8e0" />
+      <directionalLight position={[-5, 6, 8]} intensity={1.4} color="#d6fbff" />
+      <directionalLight position={[5, 2, -8]} intensity={2} color="#00b894" />
+      <pointLight position={[0, 1, 3]} intensity={10} color="#00e5f2" distance={14} decay={1.6} />
       <TreeScene
         people={people}
         layout={layout}
@@ -89,14 +89,14 @@ function TreeScene({ people, layout, activeId, lineage, hoverId, labelsRef, redu
     flows.setAttribute("aSize", new BufferAttribute(new Float32Array(edgeCount * 2).fill(0.4), 1));
     flows.setAttribute("aGlow", new BufferAttribute(new Float32Array(edgeCount * 2), 1));
     const flowColors = new Float32Array(edgeCount * 2 * 3);
-    for (let i = 0; i < edgeCount * 2; i += 1) color.set("#bfefff").toArray(flowColors, i * 3);
+    for (let i = 0; i < edgeCount * 2; i += 1) color.set("#d8ffef").toArray(flowColors, i * 3);
     flows.setAttribute("aColor", new BufferAttribute(flowColors, 3));
 
-    const glow = createGlowMaterial("#4f6bff");
+    const glow = createGlowMaterial("#008fa3");
     glow.uniforms.uSize.value = 11;
     glow.uniforms.uIntensity.value = 0.22;
     const edgeMaterial = createEdgeMaterial();
-    edgeMaterial.uniforms.uFrom.value.set("#a5a0ff");
+    edgeMaterial.uniforms.uFrom.value.set("#35f56d");
     return {
       edges,
       edgeMaterial,
@@ -109,10 +109,10 @@ function TreeScene({ people, layout, activeId, lineage, hoverId, labelsRef, redu
       plane: new PlaneGeometry(1, 1),
       glow,
       materials: {
-        self: new MeshPhysicalMaterial({ color: "#e6cf97", metalness: 0.45, roughness: 0.28, clearcoat: 1, emissive: new Color("#a07a2c"), emissiveIntensity: 0.75 }),
-        verified: new MeshStandardMaterial({ color: "#8b84ff", metalness: 0.6, roughness: 0.22, emissive: new Color("#2a2a8a"), emissiveIntensity: 0.8 }),
-        pending: new MeshPhysicalMaterial({ color: "#0b1230", metalness: 0.2, roughness: 0.05, transparent: true, opacity: 0.55, clearcoat: 1, emissive: new Color("#0e4b66"), emissiveIntensity: 0.6 }),
-        ring: new MeshStandardMaterial({ color: "#5ad7f2", emissive: new Color("#5ad7f2"), emissiveIntensity: 1.2, metalness: 0.4, roughness: 0.3 }),
+        self: new MeshPhysicalMaterial({ color: "#c8ff4d", metalness: 0.45, roughness: 0.28, clearcoat: 1, emissive: new Color("#4a7a00"), emissiveIntensity: 0.75 }),
+        verified: new MeshStandardMaterial({ color: "#00d5e6", metalness: 0.6, roughness: 0.22, emissive: new Color("#005a66"), emissiveIntensity: 0.8 }),
+        pending: new MeshPhysicalMaterial({ color: "#0b1230", metalness: 0.2, roughness: 0.05, transparent: true, opacity: 0.55, clearcoat: 1, emissive: new Color("#0e6655"), emissiveIntensity: 0.6 }),
+        ring: new MeshStandardMaterial({ color: "#00e5f2", emissive: new Color("#00e5f2"), emissiveIntensity: 1.2, metalness: 0.4, roughness: 0.3 }),
       },
     };
   }, [people]);

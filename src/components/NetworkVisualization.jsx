@@ -102,7 +102,7 @@ export default function NetworkVisualization() {
 
   return (
     <section id="network" data-act="network" className="section overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute top-1/4 left-1/2 h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(79,107,255,0.18),transparent)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute top-1/4 left-1/2 h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(0,150,180,0.18),transparent)]" />
 
       <div className="container-page relative">
         <SectionHeading
@@ -124,12 +124,12 @@ export default function NetworkVisualization() {
             transition={{ duration: 0.8, ease }}
           >
             <div className="flex items-center justify-between gap-3 px-2 pt-1 pb-2">
-              <p className="text-[0.66rem] font-semibold tracking-[0.18em] text-mist uppercase">Sample network tree</p>
+              <p className="hud-label text-mist">Sample network tree</p>
               {webgl ? (
                 <button
                   type="button"
                   onClick={toggleAll}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-mist transition-colors hover:border-iris/40 hover:text-snow"
+                  className="inline-flex items-center gap-1.5 border border-cyan/15 bg-cyan/[0.03] px-3 py-1.5 text-xs text-mist transition-colors hover:border-iris/40 hover:text-snow"
                 >
                   {allOpen ? <ChevronsDownUp size={13} aria-hidden="true" /> : <ChevronsUpDown size={13} aria-hidden="true" />}
                   {allOpen ? "Collapse branches" : "Expand all"}
@@ -154,9 +154,9 @@ export default function NetworkVisualization() {
               <TreeSVG activeId={activeId} lineage={lineage} onSelect={setActiveId} reduce={reduce} />
             )}
 
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/[0.06] px-3 pt-3 pb-1 text-xs text-mist sm:px-2">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-cyan/10 px-3 pt-3 pb-1 text-xs text-mist sm:px-2">
               <Legend swatch="bg-gold" label="You" />
-              <Legend swatch="bg-[#8b84ff]" label="Verified record" />
+              <Legend swatch="bg-[#00e5f2]" label="Verified record" />
               <Legend swatch="border border-cyan bg-transparent" label="Pending verification" />
               <span className="ml-auto text-mist/80">Sample members from the dashboard preview</span>
             </div>
@@ -179,8 +179,8 @@ export default function NetworkVisualization() {
                   transition={{ duration: 0.3, ease }}
                 >
                   <p className="eyebrow">{copy.role}</p>
-                  <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-snow">{active.alias}</h3>
-                  <dl className="mt-5 divide-y divide-white/[0.06] border-y border-white/[0.06] text-sm">
+                  <h3 className="mt-4 text-2xl font-head font-bold tracking-[-0.01em] text-snow uppercase">{active.alias}</h3>
+                  <dl className="mt-5 divide-y divide-cyan/10 border-y border-cyan/10 text-sm">
                     <Row term="Record ID" value={active.id} />
                     <Row term="Joined" value={active.joinedAt ? formatDay(active.joinedAt) : "—"} />
                     <Row term="Status" value={<StatusBadge status={active.verification} />} />
@@ -192,7 +192,7 @@ export default function NetworkVisualization() {
                     <button
                       type="button"
                       onClick={() => toggleBranch(active.id)}
-                      className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-snow transition-colors hover:border-cyan/50"
+                      className="mt-5 inline-flex items-center gap-2 border border-cyan/15 bg-cyan/[0.03] px-3.5 py-2 text-xs font-medium text-snow transition-colors hover:border-cyan/50"
                     >
                       {hiddenBelow ? <Plus size={13} aria-hidden="true" /> : <Minus size={13} aria-hidden="true" />}
                       {hiddenBelow ? `Show ${active.childIds.length} below` : "Collapse this branch"}
@@ -202,7 +202,7 @@ export default function NetworkVisualization() {
               </AnimatePresence>
             </div>
 
-            <div className="rounded-[1.4rem] border border-gold/25 bg-gold/[0.07] p-5 text-sm leading-relaxed text-snow">
+            <div className=" border border-amber-300/30 bg-amber-300/[0.06] p-5 text-sm leading-relaxed text-snow">
               A position in the tree describes a relationship. It is not income, a rank, or a
               promise that recruitment pays.
             </div>
@@ -243,7 +243,7 @@ function Tree3DView({ root, people, expanded, activeId, hoverId, lineage, reduce
   };
 
   return (
-    <div ref={wrapRef} className="relative h-[24rem] overflow-hidden rounded-[1.3rem] bg-[radial-gradient(80%_70%_at_50%_40%,rgba(30,40,100,0.35),transparent)] sm:h-[28rem]">
+    <div ref={wrapRef} className="relative h-[24rem] overflow-hidden bg-[radial-gradient(80%_70%_at_50%_40%,rgba(0,60,80,0.35),transparent)] sm:h-[28rem]">
       <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-50" />
       {near ? (
         <Suspense fallback={null}>
@@ -304,7 +304,7 @@ function Tree3DView({ root, people, expanded, activeId, hoverId, lineage, reduce
                 {you ? "You" : shortLabel(person.alias)}
               </span>
               {collapsed ? (
-                <span aria-hidden="true" className="absolute -top-1 -right-1 rounded-full border border-cyan/50 bg-[#071422] px-1.5 py-0.5 text-[0.6rem] font-semibold text-cyan">
+                <span aria-hidden="true" className="absolute -top-1 -right-1 border border-cyan/50 bg-[#071422] px-1.5 py-0.5 text-[0.6rem] font-semibold text-cyan">
                   +{person.childIds.length}
                 </span>
               ) : null}
@@ -340,19 +340,19 @@ function TreeSVG({ activeId, lineage, onSelect, reduce }) {
     >
       <defs>
         <linearGradient id="net-link" gradientUnits="userSpaceOnUse" x1="0" y1="40" x2="0" y2={HEIGHT - 40}>
-          <stop offset="0" stopColor="#a5a0ff" />
-          <stop offset="1" stopColor="#5ad7f2" />
+          <stop offset="0" stopColor="#00f5d4" />
+          <stop offset="1" stopColor="#00e5f2" />
         </linearGradient>
         <radialGradient id="net-you" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#d8bd83" stopOpacity="0.35" />
-          <stop offset="1" stopColor="#d8bd83" stopOpacity="0" />
+          <stop offset="0" stopColor="#a8ff00" stopOpacity="0.35" />
+          <stop offset="1" stopColor="#a8ff00" stopOpacity="0" />
         </radialGradient>
       </defs>
 
       {levelNames.map((name, depth) => (
         <g key={name} className="max-sm:hidden" aria-hidden="true">
           <line x1="18" x2={width - 18} y1={52 + depth * 112} y2={52 + depth * 112} stroke="rgba(255,255,255,0.04)" strokeDasharray="3 7" />
-          <text x="18" y={52 + depth * 112 - 12} fill="rgba(152,162,184,0.7)" fontSize="11" letterSpacing="2" fontFamily="Plus Jakarta Sans, sans-serif">
+          <text x="18" y={52 + depth * 112 - 12} fill="rgba(152,162,184,0.7)" fontSize="11" letterSpacing="2" fontFamily="JetBrains Mono, monospace">
             {name.toUpperCase()}
           </text>
         </g>
@@ -373,7 +373,7 @@ function TreeSVG({ activeId, lineage, onSelect, reduce }) {
               transition={{ duration: 1.1, ease, delay: index * 0.12 }}
             />
             {inView && !reduce ? (
-              <circle r="2.6" fill="#a5a0ff" opacity="0.9">
+              <circle r="2.6" fill="#00f5d4" opacity="0.9">
                 <animateMotion dur="3.4s" begin={`${1.2 + index * 0.45}s`} repeatCount="indefinite" path={d} />
               </circle>
             ) : null}
@@ -425,13 +425,13 @@ function TreeNode({ node, index, selected, lit, shown, reduce, onSelect }) {
     >
       <circle cx={node.x} cy={node.y} r={r + 22} fill="transparent" />
       {you ? <circle cx={node.x} cy={node.y} r={r + 26} fill="url(#net-you)" /> : null}
-      <circle className="focus-ring opacity-0 transition-opacity" cx={node.x} cy={node.y} r={r + 8} fill="none" stroke="#d8bd83" strokeWidth="1.5" />
+      <circle className="focus-ring opacity-0 transition-opacity" cx={node.x} cy={node.y} r={r + 8} fill="none" stroke="#a8ff00" strokeWidth="1.5" />
       <circle
         cx={node.x}
         cy={node.y}
         r={r + 7}
         fill="none"
-        stroke="rgba(165,160,255,0.55)"
+        stroke="rgba(0,245,212,0.55)"
         strokeWidth="1"
         style={{ opacity: selected ? 1 : 0, transition: "opacity 300ms ease" }}
       />
@@ -439,8 +439,8 @@ function TreeNode({ node, index, selected, lit, shown, reduce, onSelect }) {
         cx={node.x}
         cy={node.y}
         r={r}
-        fill={you ? "#d8bd83" : verified ? (lit ? "#8b84ff" : "#5b54d6") : "#0a0f1e"}
-        stroke={you ? "#f8fafc" : "#a5a0ff"}
+        fill={you ? "#a8ff00" : verified ? (lit ? "#00e5f2" : "#5b54d6") : "#070d13"}
+        stroke={you ? "#f8fafc" : "#00f5d4"}
         strokeOpacity={lit ? 1 : 0.6}
         strokeWidth={you ? 2 : 1.3}
         style={{ transition: "fill 300ms ease, stroke-opacity 300ms ease" }}
@@ -452,7 +452,7 @@ function TreeNode({ node, index, selected, lit, shown, reduce, onSelect }) {
         fontSize={you ? 12 : 10.5}
         fontWeight="600"
         fill={you ? "#080d1a" : "#f8fafc"}
-        fontFamily="Plus Jakarta Sans, sans-serif"
+        fontFamily="JetBrains Mono, monospace"
         aria-hidden="true"
       >
         {initials}
@@ -464,10 +464,10 @@ function TreeNode({ node, index, selected, lit, shown, reduce, onSelect }) {
         textAnchor="middle"
         fontSize="12"
         fill={selected ? "#f8fafc" : "rgba(152,162,184,0.95)"}
-        stroke="#0a0f1e"
+        stroke="#070d13"
         strokeWidth="5"
         paintOrder="stroke"
-        fontFamily="Plus Jakarta Sans, sans-serif"
+        fontFamily="JetBrains Mono, monospace"
         aria-hidden="true"
       >
         {you ? "You" : shortLabel(node.alias)}

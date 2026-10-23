@@ -31,15 +31,15 @@ export default function SignIn() {
     <PageEnter>
       <div className="container-page grid items-center gap-12 pt-32 pb-24 lg:grid-cols-2">
         <div>
-          <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">Account</p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">Sign in.</h1>
+          <p className="eyebrow">Account</p>
+          <h1 className="heading-hud mt-6 text-4xl leading-[0.95] sm:text-6xl">Sign in.</h1>
           <p className="mt-5 max-w-md text-base leading-relaxed text-mist sm:text-lg">
             A quiet place for members, once access exists. This screen checks the form only.
             It does not authenticate, and it does not create a session.
           </p>
         </div>
 
-        <form onSubmit={onSubmit} noValidate className="glass rounded-[1.75rem] p-6 sm:p-8">
+        <form onSubmit={onSubmit} noValidate className="glass p-6 sm:p-8">
           <div>
             <label htmlFor="sign-in-email" className="text-sm font-medium text-snow">
               Email
@@ -96,7 +96,7 @@ export default function SignIn() {
           </button>
 
           {notice ? (
-            <p role="status" className="mt-5 rounded-2xl border border-white/10 bg-navy/60 px-4 py-3 text-sm leading-relaxed text-snow">
+            <p role="status" className="mt-5 border border-cyan/15 bg-navy/60 px-4 py-3 text-sm leading-relaxed text-snow">
               {notice}
             </p>
           ) : null}

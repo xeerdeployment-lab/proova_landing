@@ -30,7 +30,7 @@ export default function BrandIntro() {
 
         <p
           ref={statementRef}
-          className="mt-8 max-w-5xl text-[clamp(1.85rem,4.2vw,3.6rem)] leading-[1.12] font-medium tracking-[-0.04em] text-balance text-snow"
+          className="mt-8 max-w-5xl text-[clamp(1.85rem,4.2vw,3.6rem)] leading-[1.12] font-head font-medium tracking-[-0.025em] text-balance text-snow"
         >
           {words.map((word, index) => {
             const clean = word.replace(/[^a-z]/gi, "").toLowerCase();
@@ -76,8 +76,8 @@ export default function BrandIntro() {
           >
             {principles.map((item, index) => (
               <TiltCard key={item.title} as="article" variants={fadeUp} className="panel p-6">
-                <p className="tilt-layer serif-accent text-4xl text-gold/90 [--depth:16px]">0{index + 1}</p>
-                <h3 className="tilt-layer mt-6 text-lg leading-snug font-semibold tracking-[-0.02em] text-snow [--depth:8px]">{item.title}</h3>
+                <p className="tilt-layer font-head text-4xl font-bold text-hud [--depth:16px]">0{index + 1}</p>
+                <h3 className="tilt-layer mt-6 text-lg leading-snug font-head font-bold tracking-[-0.01em] text-snow uppercase [--depth:8px]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-mist">{item.body}</p>
               </TiltCard>
             ))}

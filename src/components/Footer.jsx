@@ -11,18 +11,18 @@ const platformLinks = dashboardNav.filter((item) =>
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-white/[0.07] bg-ink">
+    <footer className="relative z-10 overflow-hidden border-t border-cyan/15 bg-ink">
       <div aria-hidden="true" className="hairline absolute inset-x-0 top-0" />
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 pt-20 pb-12 sm:px-8 md:grid-cols-12">
         <div className="md:col-span-4">
-          <Link to="/#top" aria-label="PROOVA home" className="inline-flex rounded-full">
-            <Logo />
+          <Link to="/#top" aria-label="PROOVA home" className="inline-flex">
+            <Logo tagline="Community Network" />
           </Link>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-mist">
             A premium introduction to a community business opportunity. Read the model
             before you participate. Earnings are not guaranteed.
           </p>
-          <p className="mt-8 text-xs font-semibold tracking-[0.18em] text-gold uppercase">Contact</p>
+          <p className="mt-8 hud-label text-cyan">Contact</p>
           <ul className="mt-3 space-y-2 text-sm text-mist">
             <li>Email: hello@proova.example</li>
             <li>Phone: to be announced</li>
@@ -54,11 +54,11 @@ export default function Footer() {
         </FooterColumn>
 
         <div className="md:col-span-12">
-          <p className="text-xs font-semibold tracking-[0.18em] text-gold uppercase">Social</p>
+          <p className="hud-label text-cyan">Social</p>
           <ul className="mt-3 flex flex-wrap items-center gap-2">
             {socials.map((name) => (
               <li key={name}>
-                <span className="inline-flex rounded-full border border-white/10 px-3 py-1.5 text-xs text-mist">
+                <span className="hud-label inline-flex border border-cyan/15 px-3 py-1.5 text-[0.6rem] text-mist">
                   {name}
                   <span className="sr-only"> — profile link pending launch</span>
                 </span>
@@ -69,7 +69,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/[0.07]">
+      <div className="border-t border-cyan/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-6 sm:px-8 md:flex-row md:items-start md:justify-between">
           <p className="max-w-3xl text-xs leading-relaxed text-mist">
             PROOVA presents a community-based business opportunity. Earnings are not guaranteed
@@ -95,7 +95,7 @@ export default function Footer() {
 function FooterColumn({ title, className = "", children }) {
   return (
     <nav aria-label={title} className={className}>
-      <p className="text-xs font-semibold tracking-[0.18em] text-gold uppercase">{title}</p>
+      <p className="hud-label text-cyan">{title}</p>
       <ul className="mt-4 space-y-2.5">{children}</ul>
     </nav>
   );
@@ -106,9 +106,9 @@ function FooterLink({ to, children }) {
     <li>
       <Link
         to={to}
-        className="group inline-flex items-center text-sm text-mist transition-colors duration-300 hover:text-snow"
+        className="group inline-flex items-center text-sm text-mist transition-colors duration-300 hover:text-cyan"
       >
-        <span className="h-px w-0 bg-iris transition-all duration-300 group-hover:mr-1.5 group-hover:w-3 motion-reduce:transition-none" aria-hidden="true" />
+        <span className="h-px w-0 bg-lime transition-all duration-300 group-hover:mr-1.5 group-hover:w-3 motion-reduce:transition-none" aria-hidden="true" />
         {children}
       </Link>
     </li>
