@@ -23,7 +23,7 @@ export default function Transactions() {
         rows={model.transactions}
         categories={transactionCategories}
         caption="Transaction ledger"
-        filename="proova-demo-transactions.csv"
+        filename="axora-demo-transactions.csv"
         initialQuery={params.get("q") ?? ""}
         emptyTitle="No transactions"
         emptyBody="No sample records match these filters."

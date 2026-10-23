@@ -23,7 +23,7 @@ export default function Withdrawals() {
         rows={rows}
         categories={transactionCategories.filter((item) => item.id === "withdrawal")}
         caption="Withdrawal history"
-        filename="proova-demo-withdrawals.csv"
+        filename="axora-demo-withdrawals.csv"
         emptyTitle="No withdrawal records"
         emptyBody="No sample withdrawal rows match these filters."
       />
