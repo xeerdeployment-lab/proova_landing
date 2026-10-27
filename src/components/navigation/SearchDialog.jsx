@@ -2,25 +2,24 @@ import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDashboard } from "../../hooks/useDashboard";
-import { getDemoModel } from "../../data/demoData";
 import { dashboardNav } from "../../data/navigation";
 import Modal from "../ui/Modal";
 
 export default function SearchDialog() {
-  const { searchOpen, setSearchOpen } = useDashboard();
+  const { searchOpen, setSearchOpen, account } = useDashboard();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
-  const model = useMemo(() => getDemoModel(), []);
 
+  const ledger = account?.ledger;
   const results = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const pages = dashboardNav
       .filter((item) => !needle || item.label.toLowerCase().includes(needle))
       .map((item) => ({ id: item.to, label: item.label, hint: "Page", to: item.to }));
     const records = needle
-      ? model.transactions
-          .filter((row) => `${row.id} ${row.label}`.toLowerCase().includes(needle))
+      ? (ledger ?? [])
+          .filter((row) => `${row.id} ${row.label} ${row.meta?.txHash ?? ""}`.toLowerCase().includes(needle))
           .slice(0, 5)
           .map((row) => ({
             id: row.id,
@@ -30,7 +29,7 @@ export default function SearchDialog() {
           }))
       : [];
     return [...pages, ...records].slice(0, 12);
-  }, [model.transactions, query]);
+  }, [ledger, query]);
 
   const safeActive = results.length ? Math.min(active, results.length - 1) : 0;
 
@@ -44,7 +43,7 @@ export default function SearchDialog() {
     <Modal
       open={searchOpen}
       title="Quick navigation"
-      description="Jump to a page or a sample transaction ID. This does not search a live account."
+      description="Jump to a page or find a transaction by reference."
       onClose={() => setSearchOpen(false)}
     >
       <label className="sr-only" htmlFor="dash-search">
@@ -74,13 +73,13 @@ export default function SearchDialog() {
               go(results[safeActive].to);
             }
           }}
-          placeholder="Overview, rewards, TX-1008"
+          placeholder="Page name or transaction reference"
           className="field py-3 pl-10"
         />
       </div>
       <ul className="mt-4 space-y-1" role="listbox" aria-label="Search results">
         {results.length === 0 ? (
-          <li className="px-2 py-6 text-sm text-mist">No matching page or sample record.</li>
+          <li className="px-2 py-6 text-sm text-mist">No matching page or transaction.</li>
         ) : (
           results.map((result, index) => (
             <li key={result.id}>

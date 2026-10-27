@@ -1,21 +1,27 @@
 import { useId } from "react";
 
 export default function Logo({ className = "", markOnly = false, variant = "site", tagline = "" }) {
-  const gradientId = `proova-mark-${useId().replace(/:/g, "")}`;
+  const gradientId = `axora-mark-${useId().replace(/:/g, "")}`;
 
   if (variant === "dashboard") {
     return (
       <span className={`inline-flex items-center gap-3 ${className}`}>
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true" className="shrink-0">
-          <circle cx="18" cy="18" r="17" fill="#11182A" stroke="rgba(220,197,139,0.55)" />
-          <circle cx="18" cy="18" r="13.25" stroke="#7667FF" strokeOpacity="0.85" />
-          <path d="M13 24.2V12.2h6.15c2.45 0 4.05 1.45 4.05 3.55 0 2.1-1.6 3.55-4.05 3.55H15.7" stroke="#F4F5FA" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M18.4 19.3 23.1 24.2" stroke="#DCC58B" strokeWidth="1.6" strokeLinecap="round" />
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true" className="shrink-0 drop-shadow-[0_0_10px_rgba(57,217,138,0.3)]">
+          <path d="M18 1.6 32.2 9.8v16.4L18 34.4 3.8 26.2V9.8L18 1.6Z" fill="#101827" stroke={`url(#${gradientId})`} strokeWidth="1.3" />
+          <path d="M13 24.2V12.2h6.15c2.45 0 4.05 1.45 4.05 3.55 0 2.1-1.6 3.55-4.05 3.55H15.7" stroke="#F4F7FB" strokeWidth="1.7" strokeLinecap="round" />
+          <path d="M18.4 19.3 23.1 24.2" stroke="#83F7B5" strokeWidth="1.7" strokeLinecap="round" />
+          <defs>
+            <linearGradient id={gradientId} x1="4" y1="2" x2="32" y2="34" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#83F7B5" />
+              <stop offset="0.5" stopColor="#39D98A" />
+              <stop offset="1" stopColor="#27B5A0" />
+            </linearGradient>
+          </defs>
         </svg>
         {markOnly ? null : (
           <span className="flex min-w-0 flex-col leading-none">
-            <span className="text-[0.92rem] font-semibold tracking-[0.28em] text-snow">Axora</span>
-            <span className="mt-1.5 text-[0.58rem] font-medium tracking-[0.24em] text-gold">MEMBER</span>
+            <span className="font-display-num text-[1.05rem] font-semibold tracking-[0.2em] text-snow">AXORA</span>
+            <span className="mt-1.5 text-[0.56rem] font-semibold tracking-[0.26em] text-mint/80">STAKING</span>
           </span>
         )}
       </span>

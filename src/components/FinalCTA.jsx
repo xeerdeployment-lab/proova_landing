@@ -9,8 +9,8 @@ export default function FinalCTA() {
   const reduce = useReducedMotion();
 
   return (
-    <section data-act="finale" className="relative flex min-h-svh flex-col justify-end overflow-hidden px-5 pt-[46svh] pb-20 sm:px-8 md:pb-28">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-[radial-gradient(70%_80%_at_50%_100%,rgba(3,7,10,0.85),transparent_75%)]" />
+    <section data-act="finale" className="relative flex min-h-svh flex-col justify-end overflow-hidden px-5 pt-[44svh] pb-16 sm:pt-[46svh] sm:pb-20 sm:px-8 md:pb-28">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[78%] bg-[radial-gradient(90%_80%_at_50%_100%,rgba(3,7,10,0.9),transparent_78%)] sm:h-[62%] sm:bg-[radial-gradient(70%_80%_at_50%_100%,rgba(3,7,10,0.85),transparent_75%)]" />
 
       <motion.div
         className="relative mx-auto max-w-3xl text-center"

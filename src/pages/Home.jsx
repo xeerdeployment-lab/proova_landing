@@ -8,7 +8,7 @@ import HowItWorks from "../components/HowItWorks";
 import NetworkVisualization from "../components/NetworkVisualization";
 import Opportunity from "../components/Opportunity";
 import PlatformShowcase from "../components/PlatformShowcase";
-// import Whyproova from "../components/Whyproova";
+// import WhyAxora from "../components/WhyAxora";
 import usePageTitle from "../lib/usePageTitle";
 
 
@@ -22,7 +22,7 @@ export default function Home() {
       <BrandIntro />
       <PlatformShowcase />
       <HowItWorks />
-      {/* <Whyproova /> */}
+      {/* <WhyAxora /> */}
       <NetworkVisualization />
       <Analytics />
       <Opportunity />

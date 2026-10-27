@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
@@ -48,7 +48,9 @@ export default function Layout() {
         <div aria-hidden="true" className="bg-grid pointer-events-none fixed inset-0 z-0 opacity-70" />
       )}
       <main id="main" className="relative z-10">
-        <Outlet />
+        <Suspense fallback={<div className="min-h-svh" />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </div>

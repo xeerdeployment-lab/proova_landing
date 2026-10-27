@@ -7,25 +7,32 @@ import usePageTitle from "../../lib/usePageTitle";
 
 const extra = [
   {
+    id: "capability",
+    question: "What is reward capability?",
+    answer:
+      "Each stake can earn up to 3x its amount in counted rewards (direct, up/down, daily income and rank rewards). Ten direct referrals within 10 days of your first stake raise this to 4x for life, fifteen to 5x. Once the cap is reached, a restake of at least your last stake amount is required.",
+  },
+  {
+    id: "withdrawal",
+    question: "How is a withdrawal split?",
+    answer:
+      "A 10% deduction is taken first. The remainder is split 50% to you and 50% to up/down income. The community fund (10%) and the rank pools (4%, 3%, 3%) are carved out of the deduction, so the lines always add up exactly to what you requested. The full breakdown is shown before you confirm.",
+  },
+  {
+    id: "daily",
+    question: "How is daily income calculated?",
+    answer:
+      "It is a fixed amount per eligible active user at each of your 10 levels — $0.01 at level 1 up to $0.05 from level 5. You can claim once every 24 hours; the server checks the time, so claims cannot be repeated.",
+  },
+  {
     id: "demo",
-    question: "Why does the dashboard say demo data?",
+    question: "Why do I see a Demo label?",
     answer:
-      "The ledger, team, ranks, and balances are sample records so the interface can be reviewed. They are not an account, and they are not money available to withdraw.",
-  },
-  {
-    id: "formulas",
-    question: "Which reward amounts are calculated?",
-    answer:
-      "The stake fee is 10%, with 90% remaining. Direct rewards use the stated 10% of a sample stake. Up/down scope, level triggers, withdrawal net payouts, and 3X–5X income limits are shown as rules that still need confirmation. Those amounts are not invented.",
-  },
-  {
-    id: "support-send",
-    question: "Does the support form send a message?",
-    answer: "No. It checks the fields in the browser and then tells you that nothing was delivered.",
+      "In development builds without a connected API, the dashboard runs on a local development ledger. Every figure carrying the Demo label is generated test data, not a real balance or payout.",
   },
 ];
 
-const topics = ["Reading the dashboard", "A sample stake", "A sample withdrawal", "Something else"];
+const topics = ["Staking", "Withdrawals", "Rewards & ranks", "Account & wallet", "Something else"];
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Help() {
@@ -47,13 +54,13 @@ export default function Help() {
     setErrors(next);
     if (Object.keys(next).length) return;
     setForm({ name: "", email: "", topic: "", message: "" });
-    pushToast({ title: "Message was not sent", body: "Support is not connected in this preview." });
+    pushToast({ title: "Support inbox not connected", body: "Your message was checked but not sent. Support messaging is not wired up in this build yet." });
   };
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
       <section className="dash-card p-5 sm:p-6">
-        <h2 className="text-xl font-semibold">Questions</h2>
+        <h2 className="text-lg font-semibold">Frequently asked questions</h2>
         <div className="mt-4 divide-y divide-white/5">
           {items.map((item) => {
             const expanded = open === item.id;
@@ -66,7 +73,7 @@ export default function Help() {
                   onClick={() => setOpen(expanded ? "" : item.id)}
                 >
                   {item.question}
-                  <span className="text-gold">{expanded ? "–" : "+"}</span>
+                  <span className="text-mint">{expanded ? "–" : "+"}</span>
                 </button>
                 <AnimatePresence initial={false}>
                   {expanded ? (
@@ -87,8 +94,8 @@ export default function Help() {
         </div>
       </section>
       <form className="dash-card h-fit p-5 sm:p-6" onSubmit={submit} noValidate>
-        <h2 className="text-xl font-semibold">Contact preview</h2>
-        <p className="mt-2 text-sm text-mist">Nothing typed here is delivered.</p>
+        <h2 className="text-lg font-semibold">Contact support</h2>
+        <p className="mt-2 text-sm text-mist">Never include your seed phrase or private key.</p>
         <label htmlFor="help-name" className="mt-5 block text-sm">
           Name
         </label>
@@ -115,7 +122,7 @@ export default function Help() {
         <textarea id="help-message" rows={5} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} className="field mt-2" />
         {errors.message ? <p className="mt-2 text-sm text-danger">{errors.message}</p> : null}
         <button type="submit" className="btn btn-primary mt-5">
-          Submit preview
+          Send message
         </button>
       </form>
     </div>

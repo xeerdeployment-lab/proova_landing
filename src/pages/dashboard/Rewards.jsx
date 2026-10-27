@@ -1,194 +1,114 @@
-import { Link } from "react-router";
+import { CalendarClock, Clock, Network, Sparkles, UserPlus } from "lucide-react";
+import RewardMix from "../../components/charts/RewardMix";
+import CapabilityCard from "../../components/dashboard/CapabilityCard";
+import DashHeading from "../../components/dashboard/DashHeading";
+import MetricCard from "../../components/dashboard/MetricCard";
+import UpDownMap from "../../components/dashboard/UpDownMap";
 import Ledger from "../../components/tables/Ledger";
+import Reveal from "../../components/ui/Reveal";
 import RuleNote from "../../components/ui/RuleNote";
-import StatusBadge from "../../components/ui/StatusBadge";
-import { DemoLabel } from "../../components/ui/States";
 import { planConfig, rewardCategories } from "../../data/planConfig";
-import useDemoModel from "../../hooks/useDemoModel";
-import { formatBps, formatCents } from "../../lib/money";
-import { evaluateRanks, upDownTierFor } from "../../lib/plan";
+import { useAccount } from "../../hooks/useAccount";
+import { formatCents } from "../../lib/money";
 import usePageTitle from "../../lib/usePageTitle";
 
 export default function Rewards() {
-  usePageTitle("Rewards & Earnings");
-  const { model } = useDemoModel();
-  const directRows = model.transactions.filter((row) => row.category === "direct_reward");
-  const pending = directRows.filter((row) => row.status === "pending").reduce((sum, row) => sum + (row.amountCents ?? 0), 0);
-  const total = directRows.reduce((sum, row) => sum + (row.amountCents ?? 0), 0);
-  const tier = upDownTierFor(model.activeStake?.amountCents ?? null);
-  const ranks = evaluateRanks({
-    selfStakeCents: model.activeStake?.amountCents ?? 0,
-    directs: model.rankDirects,
-  });
-  const rewardRows = model.transactions.filter((row) => rewardCategories.some((item) => item.id === row.category));
+  usePageTitle("My Rewards");
+  const account = useAccount();
+  const { balances, upDown, referrals, daily, stake } = account;
+  const rewardRows = account.ledger.filter((row) => rewardCategories.some((item) => item.id === row.category));
 
   return (
-    <div className="space-y-5">
-      <section className="dash-card p-6">
-        <DemoLabel />
-        <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">Rewards stay in their own categories</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-mist">
-          Direct rewards use the stated 10% rate on sample records. Up/down, level, and rank amounts stay uncalculated until the missing rules are confirmed.
-        </p>
+    <div className="space-y-8">
+      <section className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4" aria-label="Reward totals">
+        <MetricCard index={0} icon={Sparkles} label="Total earned" cents={balances.totalEarnedCents} hint="Completed rewards" tone="mint" />
+        <MetricCard index={1} icon={Clock} label="Pending" cents={balances.pendingRewardsCents} hint="Awaiting confirmation" tone="warning" />
+        <MetricCard index={2} icon={UserPlus} label="Direct rewards" cents={referrals.completedRewardsCents} hint={`${planConfig.directReward.rateBps / 100}% of each referred stake`} to="/dashboard/referrals" />
+        <MetricCard index={3} icon={CalendarClock} label="Daily income claimed" cents={daily.claimedTotalCents} hint="Across 10 levels" to="/dashboard/daily-income" tone="teal" />
       </section>
 
-      <section id="direct" className="dash-card p-5 sm:p-6">
-        <h2 className="text-xl font-semibold">Direct reward</h2>
-        <p className="mt-2 text-sm text-mist">{planConfig.directReward.note}</p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <article className="rounded-2xl border border-line p-4">
-            <p className="text-xs text-mist">Total direct rewards</p>
-            <p className="num mt-2 text-2xl font-semibold">{formatCents(directRows.length ? total : model.snapshot.totalRewardsCents)}</p>
-          </article>
-          <article className="rounded-2xl border border-line p-4">
-            <p className="text-xs text-mist">Pending direct rewards</p>
-            <p className="num mt-2 text-2xl font-semibold">{formatCents(directRows.length ? pending : model.snapshot.pendingCents)}</p>
-          </article>
-        </div>
-        <div className="mt-4 overflow-x-auto">
-          <table className="dash-table min-w-[680px]">
-            <caption className="sr-only">Sample direct rewards</caption>
-            <thead>
-              <tr>
-                <th>Record</th>
-                <th>Referral</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Calculation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {directRows.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="text-mist">
-                    No sample direct rewards in this view.
-                  </td>
-                </tr>
-              ) : (
-                directRows.map((row) => (
-                  <tr key={row.id}>
-                    <td>{row.id}</td>
-                    <td>
-                      {row.referralAlias}
-                      <span className="block text-xs text-mist">{row.referralId}</span>
-                    </td>
-                    <td className="num">{formatCents(row.amountCents)}</td>
-                    <td>
-                      <StatusBadge status={row.status} />
-                    </td>
-                    <td className="max-w-sm text-mist">{row.calculation}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="updown" className="dash-card p-5 sm:p-6">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-xl font-semibold">Up/Down rewards</h2>
-          <DemoLabel />
-        </div>
-        <div className="mt-4">
-          <RuleNote title="40% allocation needs confirmation">{planConfig.upDown.scopeNote}</RuleNote>
-        </div>
-        <p className="mt-4 text-sm text-mist">
-          Stated allocation: {formatBps(planConfig.upDown.allocationBps)}. No split between upline and downline is assumed.
-        </p>
-        <div className="mt-4 overflow-x-auto">
-          <table className="dash-table min-w-[640px]">
-            <caption className="sr-only">Up and down tier configuration</caption>
-            <thead>
-              <tr>
-                <th>Stake range</th>
-                <th>Upline association</th>
-                <th>Downline association</th>
-                <th>Sample stake</th>
-              </tr>
-            </thead>
-            <tbody>
-              {planConfig.upDown.tiers.map((item) => (
-                <tr key={item.id}>
-                  <td>
-                    {formatCents(item.minCents)} – {formatCents(item.maxCents)}
-                  </td>
-                  <td>{item.upline} users</td>
-                  <td>{item.downline} users</td>
-                  <td>{tier?.id === item.id ? "Current sample tier" : "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <article className="rounded-2xl border border-line p-4 text-sm">
-            <h3 className="font-medium text-snow">Upline distribution</h3>
-            <p className="mt-2 text-mist">
-              {model.snapshot.uplineCount} sample upline records are visible. The tier associates {tier ? tier.upline : "—"} upline users with the sample stake. No per-person amount is calculated.
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+        <Reveal>
+          <section className="dash-card h-full p-5 sm:p-6" aria-labelledby="mix-title">
+            <p className="kicker">Breakdown</p>
+            <h2 id="mix-title" className="mt-1 mb-6 text-lg font-semibold tracking-[-0.02em]">
+              Rewards by category
+            </h2>
+            <RewardMix ledger={account.ledger} />
+            <p className="mt-6 text-xs leading-relaxed text-mist">
+              Counted toward your capability: {planConfig.capability.countedCategories.map((id) => rewardCategories.find((item) => item.id === id)?.label).join(", ")}.
             </p>
-          </article>
-          <article className="rounded-2xl border border-line p-4 text-sm">
-            <h3 className="font-medium text-snow">Downline distribution</h3>
-            <p className="mt-2 text-mist">
-              {model.snapshot.downlineCount} unique sample downline records are visible. The tier associates {tier ? tier.downline : "—"} downline users. That count is not a payout list.
-            </p>
-          </article>
-        </div>
-      </section>
+          </section>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <CapabilityCard account={account} className="h-full" />
+        </Reveal>
+      </div>
 
-      <section id="levels" className="dash-card p-5 sm:p-6">
-        <h2 className="text-xl font-semibold">Level rewards</h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-mist">{planConfig.levelTriggerNote}</p>
-        <ol className="mt-6 max-w-xl border-l border-line pl-6">
-          {planConfig.levels.map((level) => (
-            <li key={level.level} className="relative pb-4">
-              <span className="absolute top-1 -left-[1.68rem] h-3 w-3 rounded-full border border-gold bg-navy" aria-hidden="true" />
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-sm text-snow">Level {level.level}</span>
-                <span className="num text-sm text-gold">{formatCents(level.amountCents)}</span>
+      <Reveal>
+        <section aria-labelledby="updown-title">
+          <DashHeading
+            kicker="Up/Down rewards"
+            title={upDown.tier ? `${upDown.tier.name} distribution` : "Up/down distribution"}
+            lede={
+              stake.active
+                ? `Your ${formatCents(stake.active.amountCents)} stake qualifies you for ${upDown.tier.upline} upline and ${upDown.tier.downline} downline positions.`
+                : "Stake to unlock up/down positions. Preview each tier below."
+            }
+          />
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+            <div className="dash-card p-5 sm:p-6">
+              <UpDownMap upDown={upDown} stakeCents={stake.active?.amountCents ?? 0} />
+            </div>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="dash-card p-4">
+                  <p className="text-xs text-mist">Allocation pool</p>
+                  <p className="font-display-num mt-1 text-xl font-semibold">{formatCents(upDown.poolCents)}</p>
+                  <p className="mt-1 text-xs text-mist">{planConfig.upDown.poolBps / 100}% of your stake, shared across positions</p>
+                </div>
+                <div className="dash-card border-accent/25 p-4">
+                  <p className="text-xs text-mist">You received</p>
+                  <p className="font-display-num mt-1 text-xl font-semibold text-mint">{formatCents(upDown.receivedCents)}</p>
+                  <p className="mt-1 text-xs text-mist">Your settled individual payouts</p>
+                </div>
               </div>
-              <p className="text-xs text-mist">Stated reward amount</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section id="ranks" className="space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 className="text-xl font-semibold">Rank rewards</h2>
-            <p className="mt-2 max-w-2xl text-sm text-mist">{planConfig.rankNote}</p>
+              <RuleNote title="Pool versus your payout">
+                The 40% figure is the pool a stake funds, not what one person receives. How the pool is divided between positions — including open positions,
+                ineligible members, rounding and unused allocation — is applied by the backend. Only settled payouts below are yours.
+              </RuleNote>
+              <div className="dash-card overflow-hidden">
+                <p className="kicker border-b border-line px-5 py-3">Individual payouts</p>
+                {upDown.payouts.length === 0 ? (
+                  <p className="px-5 py-6 text-sm text-mist">No up/down payouts yet.</p>
+                ) : (
+                  <ul className="dash-scroll max-h-72 divide-y divide-white/5 overflow-y-auto">
+                    {upDown.payouts.map((row) => (
+                      <li key={row.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                        <span className="min-w-0">
+                          <span className="flex items-center gap-2 text-snow">
+                            <Network size={13} className={row.meta?.side === "upline" ? "text-teal" : "text-accent"} aria-hidden="true" />
+                            From {row.meta?.side ?? "network"} stake of {formatCents(row.allocations?.[0]?.cents)}
+                          </span>
+                          <span className="num block text-xs text-mist">{row.id}</span>
+                        </span>
+                        <span className="num shrink-0 font-medium text-mint">+{formatCents(row.amountCents)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
-          <Link to="/dashboard/ranks" className="text-sm font-medium text-gold">
-            Open rank progress
-          </Link>
-        </div>
-        <div className="grid gap-4 lg:grid-cols-3">
-          {ranks.map((rank) => (
-            <article key={rank.id} className="dash-card p-5">
-              <div className="flex items-center justify-between gap-3">
-                <h3 className="text-lg font-semibold">{rank.name}</h3>
-                <StatusBadge status="not-confirmed" />
-              </div>
-              <p className="mt-3 text-sm text-mist">Stated withdrawal deduction {formatBps(rank.deductionBps)}.</p>
-              <p className="mt-3 text-sm text-mist">No confirmed distribution history.</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        </section>
+      </Reveal>
 
-      <section>
-        <h2 className="mb-3 text-xl font-semibold">Reward history</h2>
-        <Ledger
-          rows={rewardRows}
-          categories={rewardCategories}
-          caption="Reward history"
-          filename="axora-demo-rewards.csv"
-          emptyTitle="No reward records"
-          emptyBody="No sample reward rows match these filters."
-        />
-      </section>
+      <Reveal>
+        <section>
+          <DashHeading kicker="History" title="Reward history" />
+          <Ledger rows={rewardRows} categories={rewardCategories} filename="axora-rewards.csv" emptyTitle="No rewards yet" emptyBody="Rewards appear once your stake is active and your network grows." />
+        </section>
+      </Reveal>
     </div>
   );
 }

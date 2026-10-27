@@ -69,7 +69,7 @@ export default function GetStarted() {
             <p className="hud-label text-cyan">Preview only</p>
             <h2 className="heading-hud mt-3 text-3xl">Nothing was sent.</h2>
             <p className="mt-4 text-sm leading-relaxed text-mist sm:text-base">
-              The form accepted your entries locally so you can see the path. axora did not
+              The form accepted your entries locally so you can see the path. Axora did not
               receive them, and no account was created. When registration opens, this step will
               say so plainly — including any cost — before you join.
             </p>

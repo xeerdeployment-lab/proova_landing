@@ -27,10 +27,10 @@ export default function Modal({ open, title, description, onClose, children, wid
   return (
     <AnimatePresence>
       {open ? (
-        <div className="fixed inset-0 z-[80] flex items-end justify-center p-3 sm:items-center sm:p-6">
+        <div className="fixed inset-0 z-[80] flex items-end justify-center p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:items-center sm:p-6">
           <motion.button
             type="button"
-            className="absolute inset-0 bg-[#05070f]/75"
+            className="absolute inset-0 bg-[#04070d]/80 backdrop-blur-sm"
             aria-label="Close dialog"
             onClick={onClose}
             initial={reduce ? false : { opacity: 0 }}
@@ -43,7 +43,7 @@ export default function Modal({ open, title, description, onClose, children, wid
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className={`dash-card relative z-10 max-h-[min(92vh,860px)] w-full overflow-y-auto p-5 outline-none sm:p-6 ${
+            className={`dash-card dash-scroll relative z-10 max-h-[min(92dvh,880px)] w-full overflow-y-auto bg-card p-5 outline-none sm:p-7 ${
               wide ? "max-w-2xl" : "max-w-lg"
             }`}
             initial={reduce ? false : { opacity: 0, y: 16, scale: 0.98 }}
@@ -53,7 +53,7 @@ export default function Modal({ open, title, description, onClose, children, wid
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 id={titleId} className="text-xl font-semibold tracking-[-0.03em]">
+                <h2 id={titleId} className="text-lg font-semibold tracking-[-0.02em] sm:text-xl">
                   {title}
                 </h2>
                 {description ? <p className="mt-2 text-sm leading-relaxed text-mist">{description}</p> : null}

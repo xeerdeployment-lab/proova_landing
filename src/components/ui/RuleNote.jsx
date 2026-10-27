@@ -1,13 +1,21 @@
 import { Info } from "lucide-react";
+import cx from "../../lib/cx";
 
-export default function RuleNote({ title = "Rule needs confirmation", children }) {
+const toneClasses = {
+  info: "border-teal/25 bg-teal/[0.06] text-teal",
+  warning: "border-warning/25 bg-warning/[0.06] text-warning",
+};
+
+export default function RuleNote({ title, children, tone = "info", className = "" }) {
   return (
-    <div className="rounded-2xl border border-gold/25 bg-gold/[0.06] px-4 py-3">
-      <p className="flex items-center gap-2 text-sm font-semibold text-gold">
-        <Info size={16} aria-hidden="true" />
-        {title}
-      </p>
-      <p className="mt-2 text-sm leading-relaxed text-mist">{children}</p>
+    <div className={cx("rounded-2xl border px-4 py-3", toneClasses[tone], className)}>
+      {title ? (
+        <p className="flex items-center gap-2 text-sm font-semibold">
+          <Info size={15} aria-hidden="true" />
+          {title}
+        </p>
+      ) : null}
+      <div className={cx("text-sm leading-relaxed text-mist", title && "mt-1.5")}>{children}</div>
     </div>
   );
 }

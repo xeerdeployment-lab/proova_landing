@@ -64,7 +64,7 @@ export default function PlatformShowcase() {
           role="tablist"
           aria-label="Dashboard views"
           onKeyDown={onKeyDown}
-          className="mt-12 grid w-full grid-cols-4 gap-1 border border-cyan/20 bg-cyan/[0.03] p-1 sm:inline-flex sm:w-auto"
+          className="mt-12 grid w-full grid-cols-2 gap-1 border border-cyan/20 bg-cyan/[0.03] p-1 min-[480px]:grid-cols-4 sm:inline-flex sm:w-auto"
         >
           {platformViews.map((view) => {
             const selected = view.id === activeId;
@@ -78,7 +78,7 @@ export default function PlatformShowcase() {
                 aria-controls={`${baseId}-panel`}
                 tabIndex={selected ? 0 : -1}
                 onClick={() => setActiveId(view.id)}
-                className={`hud-label relative isolate px-1 py-2.5 text-[0.62rem] whitespace-nowrap transition-colors duration-300 sm:px-5 sm:text-sm ${
+                className={`hud-label relative isolate min-h-11 px-1 py-2.5 text-[0.62rem] whitespace-nowrap transition-colors duration-300 sm:px-5 sm:text-sm ${
                   selected ? "font-semibold text-ink" : "text-mist hover:text-snow"
                 }`}
               >
@@ -104,7 +104,7 @@ export default function PlatformShowcase() {
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={active.id}
-              className="flex flex-col justify-between gap-8 lg:col-span-4"
+              className="flex min-w-0 flex-col justify-between gap-8 lg:col-span-4"
               initial={reduce ? false : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
@@ -133,7 +133,7 @@ export default function PlatformShowcase() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="lg:col-span-8">
+          <div className="min-w-0 lg:col-span-8">
             <div className="beam shadow-float">
               <WindowFrame path={`Member dashboard · ${active.label}`}>
                 <div className="relative min-h-[22rem] p-4 sm:p-6">

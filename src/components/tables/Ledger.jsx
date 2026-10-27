@@ -1,36 +1,108 @@
-import { Download } from "lucide-react";
+import { Download, Search, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
-import { ledgerStatuses } from "../../data/planConfig";
+import { categoryLabel, ledgerStatuses, transactionCategories } from "../../data/planConfig";
+import { useDashboard } from "../../hooks/useDashboard";
+import cx from "../../lib/cx";
 import { downloadCsv } from "../../lib/csv";
 import { formatDate } from "../../lib/dates";
 import { formatCents } from "../../lib/money";
-import { useDashboard } from "../../hooks/useDashboard";
+import BreakdownRows from "../dashboard/BreakdownRows";
 import Modal from "../ui/Modal";
 import StatusBadge from "../ui/StatusBadge";
 import DataTable from "./DataTable";
 import Pagination from "./Pagination";
 
-const pageSize = 6;
+const directionCopy = {
+  credit: "Credit to balance",
+  debit: "Debit from balance",
+  external: "Paid from wallet",
+  allocation: "Allocation (part of a related record)",
+};
 
 function localDay(iso) {
   const date = new Date(iso);
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${date.getFullYear()}-${month}-${day}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+export function Amount({ row, className = "" }) {
+  const sign = row.direction === "credit" ? "+" : row.direction === "debit" ? "−" : "";
+  return (
+    <span
+      className={cx(
+        "num font-medium",
+        row.direction === "credit" ? "text-mint" : row.direction === "allocation" ? "text-mist" : "text-snow",
+        (row.status === "failed" || row.status === "rejected") && "line-through opacity-60",
+        className,
+      )}
+    >
+      {sign}
+      {formatCents(row.amountCents)}
+    </span>
+  );
+}
+
+export function TransactionDetail({ row, onClose }) {
+  const { source } = useDashboard();
+  return (
+    <Modal open={Boolean(row)} title={row ? row.label : "Transaction"} description={row ? `Reference ${row.id}` : undefined} onClose={onClose} wide>
+      {row ? (
+        <div className="space-y-5 text-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-white/[0.02] p-4">
+            <div>
+              <p className="text-xs text-mist">{directionCopy[row.direction] ?? "Amount"}</p>
+              <Amount row={row} className="font-display-num mt-1 block text-2xl" />
+            </div>
+            <StatusBadge status={row.status} />
+          </div>
+          <dl className="grid gap-3 sm:grid-cols-3">
+            <div>
+              <dt className="kicker">Reference</dt>
+              <dd className="num mt-1 text-snow">{row.id}</dd>
+            </div>
+            <div>
+              <dt className="kicker">Timestamp</dt>
+              <dd className="mt-1 text-snow">{formatDate(row.at, true)}</dd>
+            </div>
+            <div>
+              <dt className="kicker">Category</dt>
+              <dd className="mt-1 text-snow">{categoryLabel(row.category)}</dd>
+            </div>
+            {row.relatedId ? (
+              <div>
+                <dt className="kicker">Related record</dt>
+                <dd className="num mt-1 text-snow">{row.relatedId}</dd>
+              </div>
+            ) : null}
+          </dl>
+          <p className="leading-relaxed text-mist">{row.detail}</p>
+          {row.allocations?.length ? (
+            <div>
+              <p className="kicker mb-3">Allocation breakdown</p>
+              <BreakdownRows rows={row.allocations.map((item) => ({ label: item.label, cents: item.cents }))} />
+            </div>
+          ) : null}
+          {source === "demo" ? <p className="text-xs text-warning">Demo record from the development ledger.</p> : null}
+        </div>
+      ) : null}
+    </Modal>
+  );
 }
 
 export default function Ledger({
   rows,
-  categories,
-  caption,
-  filename,
+  categories = transactionCategories,
+  caption = "Transactions",
+  filename = "axora-transactions.csv",
   initialQuery = "",
-  emptyTitle,
-  emptyBody,
+  initialCategory = "all",
+  pageSize = 8,
+  emptyTitle = "No transactions yet",
+  emptyBody = "Stakes, rewards and withdrawals will appear here once they are recorded.",
+  compact = false,
 }) {
-  const { pushToast } = useDashboard();
+  const { pushToast, source } = useDashboard();
   const [query, setQuery] = useState(initialQuery);
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState(initialCategory);
   const [status, setStatus] = useState("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -41,8 +113,7 @@ export default function Ledger({
     const needle = query.trim().toLowerCase();
     return rows.filter((row) => {
       const day = localDay(row.at);
-      const haystack = `${row.id} ${row.label} ${row.referralId ?? ""} ${row.referralAlias ?? ""}`.toLowerCase();
-      if (needle && !haystack.includes(needle)) return false;
+      if (needle && !`${row.id} ${row.label} ${row.relatedId ?? ""} ${row.detail ?? ""}`.toLowerCase().includes(needle)) return false;
       if (category !== "all" && row.category !== category) return false;
       if (status !== "all" && row.status !== status) return false;
       if (from && day < from) return false;
@@ -54,185 +125,137 @@ export default function Ledger({
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const safePage = Math.min(page, pages);
   const slice = filtered.slice((safePage - 1) * pageSize, safePage * pageSize);
+  const filtersOn = query || category !== "all" || status !== "all" || from || to;
+  // On phones only search shows by default; the other filters fold behind a toggle.
+  const [showFilters, setShowFilters] = useState(false);
+  const extraFilters = [category !== "all", status !== "all", from, to].filter(Boolean).length;
+  const extra = showFilters ? "" : "max-sm:hidden";
+  const set = (setter) => (event) => {
+    setter(event.target.value);
+    setPage(1);
+  };
 
   const exportRows = () => {
     if (!filtered.length) {
-      pushToast({ title: "Nothing to export", body: "Adjust the filters and try again.", tone: "error" });
+      pushToast({ title: "Nothing to export", body: "No transactions match the current filters.", tone: "error" });
       return;
     }
     downloadCsv(
       filename,
-      ["Record source", "Transaction ID", "Date", "Category", "Amount", "Status", "Detail", "Rule", "Calculation"],
+      ["Reference", "Timestamp (UTC)", "Category", "Direction", "Amount (USD)", "Status", "Related record", "Detail", "Allocations", "Source"],
       filtered.map((row) => [
-        "demo",
         row.id,
-        formatDate(row.at, true),
-        row.label,
-        row.amountCents == null ? "" : formatCents(row.amountCents),
+        row.at,
+        categoryLabel(row.category),
+        row.direction,
+        (row.amountCents / 100).toFixed(2),
         row.status,
+        row.relatedId ?? "",
         row.detail,
-        row.rule,
-        row.calculation,
+        (row.allocations ?? []).map((item) => `${item.label}: ${(item.cents / 100).toFixed(2)}`).join("; "),
+        source === "demo" ? "demo" : "server",
       ]),
     );
-    pushToast({ title: "Export ready", body: "The file contains demo records only." });
+    pushToast({ title: "Export ready", body: `${filtered.length} transaction${filtered.length === 1 ? "" : "s"} exported.`, tone: "success" });
   };
 
   return (
     <div className="dash-card overflow-hidden">
-      <div className="flex flex-col gap-3 border-b border-line p-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
-          <label className="text-xs text-mist">
-            Search
-            <input
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                setPage(1);
-              }}
-              placeholder="Transaction ID"
-              className="field mt-1.5 py-2.5 text-sm"
-            />
-          </label>
-          <label className="text-xs text-mist">
-            Category
-            <select
-              value={category}
-              onChange={(event) => {
-                setCategory(event.target.value);
-                setPage(1);
-              }}
-              className="field mt-1.5 py-2.5 text-sm"
-            >
-              <option value="all">All categories</option>
-              {categories.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs text-mist">
-            Status
-            <select
-              value={status}
-              onChange={(event) => {
-                setStatus(event.target.value);
-                setPage(1);
-              }}
-              className="field mt-1.5 py-2.5 text-sm"
-            >
-              <option value="all">All statuses</option>
-              {ledgerStatuses.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs text-mist">
-            From
-            <input
-              type="date"
-              value={from}
-              onChange={(event) => {
-                setFrom(event.target.value);
-                setPage(1);
-              }}
-              className="field mt-1.5 py-2.5 text-sm"
-            />
-          </label>
-          <label className="text-xs text-mist">
-            To
-            <input
-              type="date"
-              value={to}
-              onChange={(event) => {
-                setTo(event.target.value);
-                setPage(1);
-              }}
-              className="field mt-1.5 py-2.5 text-sm"
-            />
-          </label>
+      {compact ? null : (
+        <div className="flex flex-col gap-3 border-b border-line p-4 sm:p-5 xl:flex-row xl:items-end">
+          <div className="grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5">
+            <label className="text-xs text-mist sm:col-span-2 lg:col-span-4 2xl:col-span-1">
+              Search
+              <span className="relative mt-1.5 block">
+                <Search size={14} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-mist" aria-hidden="true" />
+                <input value={query} onChange={set(setQuery)} placeholder="Reference or keyword" className="field py-2.5 pl-9 text-sm" type="search" />
+              </span>
+            </label>
+            <label className={cx("text-xs text-mist", extra)}>
+              Type
+              <select value={category} onChange={set(setCategory)} className="field mt-1.5 py-2.5 text-sm">
+                <option value="all">All types</option>
+                {categories.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={cx("text-xs text-mist", extra)}>
+              Status
+              <select value={status} onChange={set(setStatus)} className="field mt-1.5 py-2.5 text-sm">
+                <option value="all">All statuses</option>
+                {ledgerStatuses.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={cx("text-xs text-mist", extra)}>
+              From
+              <input type="date" value={from} max={to || undefined} onChange={set(setFrom)} className="field mt-1.5 py-2.5 text-sm" />
+            </label>
+            <label className={cx("text-xs text-mist", extra)}>
+              To
+              <input type="date" value={to} min={from || undefined} onChange={set(setTo)} className="field mt-1.5 py-2.5 text-sm" />
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className="btn btn-secondary btn-sm sm:hidden" aria-expanded={showFilters} onClick={() => setShowFilters((open) => !open)}>
+              <SlidersHorizontal size={15} aria-hidden="true" />
+              {showFilters ? "Hide filters" : "Filters"}
+              {extraFilters && !showFilters ? <span className="rounded-full bg-accent/15 px-1.5 text-[0.65rem] font-semibold text-mint">{extraFilters}</span> : null}
+            </button>
+            {filtersOn ? (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={() => {
+                  setQuery("");
+                  setCategory("all");
+                  setStatus("all");
+                  setFrom("");
+                  setTo("");
+                  setPage(1);
+                }}
+              >
+                Clear
+              </button>
+            ) : null}
+            <button type="button" className="btn btn-secondary btn-sm shrink-0 max-sm:ml-auto" onClick={exportRows}>
+              <Download size={15} aria-hidden="true" />
+              Export CSV
+            </button>
+          </div>
         </div>
-        <button type="button" className="btn btn-secondary btn-sm shrink-0" onClick={exportRows}>
-          <Download size={15} aria-hidden="true" />
-          Export CSV
-        </button>
-      </div>
+      )}
       <DataTable
         caption={caption}
         rows={slice}
-        emptyTitle={emptyTitle}
-        emptyBody={emptyBody}
+        emptyTitle={filtersOn ? "No matching transactions" : emptyTitle}
+        emptyBody={filtersOn ? "Try a different search, type, status or date range." : emptyBody}
+        onRowClick={setSelected}
+        rowLabel={(row) => `${row.label} ${row.id}, view details`}
         columns={[
-          { key: "id", header: "Transaction ID", cell: (row) => <span className="font-medium text-snow">{row.id}</span> },
-          { key: "date", header: "Date", cell: (row) => formatDate(row.at, true) },
-          { key: "type", header: "Transaction type", cell: (row) => row.label },
           {
-            key: "amount",
-            header: "Amount",
-            cell: (row) => <span className="num">{formatCents(row.amountCents)}</span>,
-          },
-          { key: "status", header: "Status", cell: (row) => <StatusBadge status={row.status} /> },
-          {
-            key: "details",
-            header: "Details",
+            key: "type",
+            header: "Transaction",
             cell: (row) => (
-              <button type="button" className="text-sm font-medium text-gold hover:underline" onClick={() => setSelected(row)}>
-                View
-              </button>
+              <span className="flex min-w-0 flex-col">
+                <span className="truncate font-medium text-snow">{row.label}</span>
+                <span className="num text-xs text-mist">{row.id}</span>
+              </span>
             ),
           },
+          { key: "date", header: "Date", cell: (row) => <span className="whitespace-nowrap">{formatDate(row.at, true)}</span> },
+          { key: "status", header: "Status", cell: (row) => <StatusBadge status={row.status} /> },
+          { key: "amount", header: "Amount", align: "right", cell: (row) => <Amount row={row} /> },
         ]}
       />
-      <Pagination page={safePage} pages={pages} total={filtered.length} onPage={setPage} />
-      <Modal open={Boolean(selected)} title={selected ? selected.id : "Record"} onClose={() => setSelected(null)} wide>
-        {selected ? (
-          <div className="space-y-4 text-sm leading-relaxed">
-            <div className="flex flex-wrap items-center gap-2">
-              <StatusBadge status={selected.status} />
-              <span className="text-mist">{formatDate(selected.at, true)}</span>
-            </div>
-            <p className="text-base text-snow">{selected.detail}</p>
-            <dl className="grid gap-3 sm:grid-cols-2">
-              <div>
-                <dt className="text-xs tracking-[0.14em] text-mist uppercase">Amount</dt>
-                <dd className="num mt-1 text-snow">{formatCents(selected.amountCents)}</dd>
-              </div>
-              <div>
-                <dt className="text-xs tracking-[0.14em] text-mist uppercase">Type</dt>
-                <dd className="mt-1 text-snow">{selected.label}</dd>
-              </div>
-              {selected.referralId ? (
-                <div>
-                  <dt className="text-xs tracking-[0.14em] text-mist uppercase">Referral</dt>
-                  <dd className="mt-1 text-snow">
-                    {selected.referralAlias} · {selected.referralId}
-                  </dd>
-                </div>
-              ) : null}
-              {selected.relatedId ? (
-                <div>
-                  <dt className="text-xs tracking-[0.14em] text-mist uppercase">Related record</dt>
-                  <dd className="mt-1 text-snow">{selected.relatedId}</dd>
-                </div>
-              ) : null}
-            </dl>
-            <div>
-              <p className="text-xs tracking-[0.14em] text-mist uppercase">Applicable rule</p>
-              <p className="mt-1 text-mist">{selected.rule}</p>
-            </div>
-            <div>
-              <p className="text-xs tracking-[0.14em] text-mist uppercase">Calculation</p>
-              <p className="mt-1 text-mist">{selected.calculation}</p>
-            </div>
-            <p className="rounded-2xl border border-line bg-navy/50 px-4 py-3 text-mist">
-              Demo record. A completed or pending label in this preview does not mean funds moved. Settled records cannot be edited from the dashboard.
-            </p>
-          </div>
-        ) : null}
-      </Modal>
+      {compact ? null : <Pagination page={safePage} pages={pages} total={filtered.length} onPage={setPage} label="transactions" />}
+      <TransactionDetail row={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function Notifications() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-2xl font-semibold tracking-[-0.04em]">Notification center</h2>
-            <p className="mt-2 text-sm text-mist">Preview notices only. They are not live account events.</p>
+            <p className="mt-2 text-sm text-mist">Updates about your stakes, rewards, withdrawals and team.</p>
           </div>
           <button type="button" className="btn btn-secondary btn-sm" onClick={markAllRead}>
             <CheckCheck size={15} aria-hidden="true" />
@@ -57,7 +57,7 @@ export default function Notifications() {
       </section>
       {visible.length === 0 ? (
         <div className="dash-card">
-          <EmptyState icon={Bell} title="No notifications" body="Unread notices will appear here. This preview has none in the current filter." />
+          <EmptyState icon={Bell} title="No notifications" body="Nothing in this filter. New account updates will appear here." />
         </div>
       ) : (
         <ul className="space-y-3">
@@ -74,7 +74,7 @@ export default function Notifications() {
                     setOpenId(open ? null : item.id);
                   }}
                 >
-                  {!item.read ? <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-gold" aria-label="Unread" /> : <span className="mt-2 h-2 w-2 shrink-0" />}
+                  {!item.read ? <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-accent" aria-label="Unread" /> : <span className="mt-2 h-2 w-2 shrink-0" />}
                   <span className="min-w-0 flex-1">
                     <span className="flex flex-wrap items-center gap-2">
                       <span className="text-sm font-semibold text-snow">{item.title}</span>

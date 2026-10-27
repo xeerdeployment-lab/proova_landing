@@ -3,6 +3,16 @@ import { inMonth } from "../lib/dates";
 import { formatCents, percentOf } from "../lib/money";
 import { stakeBreakdown } from "../lib/plan";
 
+/** Copy for the illustrative landing mockups. The dashboard reads rules from planConfig instead. */
+const notes = {
+  direct: "The direct reward is 10% of the referred stake amount.",
+  upDown: "Each stake funds a 40% up/down pool shared across eligible upline and downline positions by tier.",
+  level: "Daily income is a fixed amount per eligible active user at each of 10 levels.",
+  rank: "Rank pools are funded from withdrawal deductions and distributed during withdrawal processing.",
+  withdrawal: "A 10% deduction applies; the remainder is split between the member and up/down income.",
+  reentry: "A restake is required once the reward capability is reached.",
+};
+
 export const demoMember = {
   id: "PRV-20418",
   displayName: "Demo Member",
@@ -185,7 +195,7 @@ function buildTransactions() {
       referralId: spec.referralId,
       referralAlias: person?.alias ?? spec.referralId,
       detail: "Illustrative direct reward from the stated 10% rule. Not a confirmed or withdrawable payout.",
-      rule: planConfig.directReward.note,
+      rule: notes.direct,
       calculation: `10% of the sample stake ${formatCents(basis)} on this reward record (${spec.referralId}) = ${formatCents(amountCents)}.`,
     };
   });
@@ -223,7 +233,7 @@ function buildTransactions() {
       amountCents: null,
       status: "pending",
       detail: "Sample structure event. No amount is assigned because the 40% allocation scope is unconfirmed.",
-      rule: planConfig.upDown.scopeNote,
+      rule: notes.upDown,
       calculation: "Not calculated.",
     },
     {
@@ -234,7 +244,7 @@ function buildTransactions() {
       amountCents: null,
       status: "pending",
       detail: "No level earning event is confirmed. Stated amounts are on the rewards page.",
-      rule: planConfig.levelTriggerNote,
+      rule: notes.level,
       calculation: "Not calculated.",
     },
     {
@@ -245,7 +255,7 @@ function buildTransactions() {
       amountCents: null,
       status: "pending",
       detail: "No rank eligibility is confirmed, so no distribution is calculated.",
-      rule: planConfig.rankNote,
+      rule: notes.rank,
       calculation: "Not calculated.",
     },
     {
@@ -256,7 +266,7 @@ function buildTransactions() {
       amountCents: 2_000,
       status: "pending",
       detail: "Sample withdrawal row. It was not submitted to a backend, and no funds moved.",
-      rule: planConfig.withdrawal.formulaNote,
+      rule: notes.withdrawal,
       calculation: "Requested $20.00 in the sample ledger. Net payout is not calculated.",
     },
     {
@@ -289,7 +299,7 @@ function buildTransactions() {
       amountCents: null,
       status: "pending",
       detail: "The 10% community fund deduction is stated for withdrawals. It is not applied, because the formula is unconfirmed.",
-      rule: planConfig.withdrawal.formulaNote,
+      rule: notes.withdrawal,
       calculation: "Not calculated.",
       relatedId: "TX-1034",
     },
@@ -301,7 +311,7 @@ function buildTransactions() {
       amountCents: null,
       status: "pending",
       detail: "No re-entry event has occurred. This row reserves the category in the preview ledger.",
-      rule: planConfig.reentry.note,
+      rule: notes.reentry,
       calculation: "Not calculated.",
     },
   ];
@@ -353,7 +363,7 @@ export const demoNotifications = [
 ];
 
 export function referralLink(code = demoMember.referralId) {
-  const origin = typeof window === "undefined" ? "https://proova.example" : window.location.origin;
+  const origin = typeof window === "undefined" ? "https://axora.example" : window.location.origin;
   return `${origin}/get-started?ref=${encodeURIComponent(code)}`;
 }
 

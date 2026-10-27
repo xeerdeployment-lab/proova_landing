@@ -4,7 +4,7 @@ import { stagger } from "../lib/motion";
 import FeatureCard from "./FeatureCard";
 import SectionHeading from "./SectionHeading";
 
-export default function Whyproova() {
+export default function WhyAxora() {
   const reduce = useReducedMotion();
 
   return (

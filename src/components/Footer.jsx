@@ -72,13 +72,13 @@ export default function Footer() {
       <div className="border-t border-cyan/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-6 sm:px-8 md:flex-row md:items-start md:justify-between">
           <p className="max-w-3xl text-xs leading-relaxed text-mist">
-            axora presents a community-based business opportunity. Earnings are not guaranteed
+            Axora presents a community-based business opportunity. Earnings are not guaranteed
             and depend on individual effort, market conditions, and the official plan terms.
             This website is an introduction. It is not an offer of employment, an investment,
             or a promise of income. Products, compensation, and legal details will be published
             before participation opens. Contact details using the .example domain are placeholders.
           </p>
-          <p className="shrink-0 text-xs text-mist/80">© {year} axora. All rights reserved.</p>
+          <p className="shrink-0 text-xs text-mist/80">© {year} Axora. All rights reserved.</p>
         </div>
       </div>
 

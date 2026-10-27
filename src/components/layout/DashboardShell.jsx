@@ -1,42 +1,74 @@
+import { FlaskConical } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router";
 import { DashboardProvider } from "../../context/DashboardContext";
 import { useDashboard } from "../../hooks/useDashboard";
 import { ease } from "../../lib/motion";
+import MobileNav from "../navigation/MobileNav";
 import SearchDialog from "../navigation/SearchDialog";
 import Sidebar from "../navigation/Sidebar";
 import Topbar from "../navigation/Topbar";
-import { ErrorState, PageSkeleton } from "../ui/States";
+import { ErrorState, OfflineState, PageSkeleton } from "../ui/States";
 import ToastRegion from "../ui/Toast";
 
+function DemoBanner() {
+  return (
+    <div className="mb-6 flex items-start gap-3 rounded-2xl border border-warning/25 bg-warning/[0.06] px-4 py-3 text-sm" role="note">
+      <FlaskConical size={16} className="mt-0.5 shrink-0 text-warning" aria-hidden="true" />
+      <p className="leading-relaxed text-mist">
+        <span className="font-semibold text-warning">Demo data · development build.</span> No member API is configured, so this dashboard runs on a local
+        development ledger. Every balance, reward and transaction is generated test data. Production builds never show it.
+      </p>
+    </div>
+  );
+}
+
 function Frame() {
-  const { pathname, search } = useLocation();
-  const { dataMode, setDataMode } = useDashboard();
+  const { pathname } = useLocation();
+  const { status, error, retry, source } = useDashboard();
   const reduce = useReducedMotion();
   const scroller = useRef(null);
-  const [progress, setProgress] = useState(0);
+  const bar = useRef(null);
 
   useEffect(() => {
-    const node = scroller.current;
-    if (!node) return;
-    node.scrollTo({ top: 0 });
-    setProgress(0);
-  }, [pathname, search]);
+    scroller.current?.scrollTo({ top: 0 });
+  }, [pathname]);
 
   useEffect(() => {
     const node = scroller.current;
     if (!node) return undefined;
-    const onScroll = () => {
+    // Written straight to the bar so scrolling never re-renders the shell.
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
       const max = node.scrollHeight - node.clientHeight;
-      setProgress(max > 0 ? node.scrollTop / max : 0);
+      if (bar.current) bar.current.style.transform = `scaleX(${max > 0 ? node.scrollTop / max : 0})`;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(paint);
     };
     node.addEventListener("scroll", onScroll, { passive: true });
-    return () => node.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      node.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
+  let body;
+  if (status === "loading") body = <PageSkeleton />;
+  else if (status === "offline") body = <OfflineState />;
+  else if (status === "error") body = <ErrorState body={error?.message} onRetry={retry} />;
+  else {
+    body = (
+      <motion.div key={pathname} initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease }}>
+        <Outlet />
+      </motion.div>
+    );
+  }
+
   return (
-    <div className="dash-canvas flex h-screen overflow-hidden text-snow">
+    <div className="dash-canvas flex h-dvh overflow-hidden text-snow">
       <a
         href="#dashboard-main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-snow focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy"
@@ -45,42 +77,26 @@ function Frame() {
       </a>
       <Sidebar />
       <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
-        {reduce ? null : (
-          <motion.div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-28 right-[-6rem] z-0 h-[26rem] w-[26rem] rounded-full bg-[#7667FF]/10 blur-3xl"
-            animate={{ x: [0, -28, 0], y: [0, 32, 0] }}
-            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-          />
-        )}
-        <div className="relative z-10 h-0.5 bg-white/5" aria-hidden="true">
-          <div className="h-full origin-left bg-gradient-to-r from-royal via-electric to-gold" style={{ transform: `scaleX(${progress})` }} />
+        <div className="relative z-50 h-0.5 bg-white/5" aria-hidden="true">
+          <div className="h-full origin-left bg-gradient-to-r from-teal via-accent to-mint" ref={bar} style={{ transform: "scaleX(0)" }} />
         </div>
         <Topbar />
-        <main id="dashboard-main" ref={scroller} className="dash-scroll relative z-10 min-h-0 flex-1 overflow-y-auto px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
+        <main
+          id="dashboard-main"
+          ref={scroller}
+          className="dash-scroll relative z-10 min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4 pt-5 pb-[calc(7rem+env(safe-area-inset-bottom))] sm:px-6 sm:pt-6 lg:px-10 lg:pt-8 lg:pb-12"
+        >
           <div className="mx-auto w-full max-w-7xl">
-            <Suspense fallback={<PageSkeleton />}>
-              {dataMode === "loading" ? (
-                <PageSkeleton />
-              ) : dataMode === "error" ? (
-                <ErrorState onRetry={() => setDataMode("sample")} />
-              ) : (
-                <motion.div
-                  key={`${pathname}${search}${dataMode}`}
-                  initial={reduce ? false : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, ease }}
-                >
-                  <Outlet />
-                </motion.div>
-              )}
-            </Suspense>
-            <p className="mt-16 max-w-3xl text-xs leading-relaxed text-mist">
-              Demo data only. Figures on this dashboard are sample records for the interface. They are not balances, payouts, or confirmed ranks. Earnings are not guaranteed. Stake, withdrawal, and reward outcomes have to be calculated and settled by a backend after the compensation rules are confirmed.
+            {source === "demo" && status === "ready" ? <DemoBanner /> : null}
+            <Suspense fallback={<PageSkeleton />}>{body}</Suspense>
+            <p className="mt-16 max-w-3xl text-xs leading-relaxed text-mist/80">
+              Staking involves risk and rewards are not guaranteed. Every amount is settled by the Axora backend; previews on this dashboard use the
+              same configured plan rules but are not a commitment until the server confirms them.
             </p>
           </div>
         </main>
       </div>
+      <MobileNav />
       <SearchDialog />
       <ToastRegion />
     </div>

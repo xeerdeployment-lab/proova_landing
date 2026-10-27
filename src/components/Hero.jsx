@@ -72,7 +72,7 @@ export default function Hero() {
             className="mt-7 max-w-xl text-base leading-relaxed text-mist sm:text-lg"
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 0.85 }}
+            transition={{ duration: 0.7, ease, delay: 0.45 }}
           >
             Axora is a community business platform built around clarity — a precise member
             dashboard for your stake, network, and ledger, and a plan you can read before you
@@ -83,7 +83,7 @@ export default function Hero() {
             className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 1 }}
+            transition={{ duration: 0.8, ease, delay: 0.6 }}
           >
             <Magnetic>
               <Button to="/get-started" variant="lux" size="lg" className="group w-full sm:w-auto">
@@ -99,10 +99,10 @@ export default function Hero() {
           </motion.div>
 
           <motion.ul
-            className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-cyan/10 pt-5"
+            className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-cyan/10 pt-5 max-lg:-mx-3 max-lg:bg-ink/55 max-lg:px-3 max-lg:pb-4 max-lg:backdrop-blur-[3px]"
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, ease, delay: 1.2 }}
+            transition={{ duration: 0.9, ease, delay: 0.8 }}
             aria-label="Platform commitments"
           >
             <li className="hud-label flex items-center gap-2 text-[0.6rem] text-green">
@@ -127,7 +127,7 @@ export default function Hero() {
         className="pointer-events-none absolute right-5 bottom-8 left-5 flex items-center justify-between gap-4 sm:right-8 sm:left-8 lg:left-auto lg:w-[44%] lg:justify-end"
         initial={reduce ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease, delay: 1.6 }}
+        transition={{ duration: 1, ease, delay: 1.2 }}
         style={reduce ? undefined : { opacity: exitOpacity }}
       >
         <p className="hud-label flex items-center gap-2 text-[0.6rem] text-mist/80">

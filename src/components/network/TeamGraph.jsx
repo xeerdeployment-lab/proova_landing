@@ -1,12 +1,13 @@
 import { Minus, Plus, RotateCcw, Search } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { formatDate } from "../../lib/dates";
 import StatusBadge from "../ui/StatusBadge";
 
 const nodeWidth = 142;
 const gapX = 18;
 const gapY = 108;
+const mobilePage = 20;
 
 function leafCount(node) {
   if (!node.children?.length) return 1;
@@ -88,6 +89,7 @@ export default function TeamGraph({ root, upline }) {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(root.id);
   const [view, setView] = useState({ x: 12, y: 12, k: 1 });
+  const [shown, setShown] = useState(mobilePage);
   const drag = useRef(null);
   const frame = useRef(null);
 
@@ -104,6 +106,24 @@ export default function TeamGraph({ root, upline }) {
   const graph = useMemo(() => layoutTree(root, upline, expanded), [root, upline, expanded]);
   const selected = graph.positions.find((node) => node.id === activeId) ?? graph.positions[0];
   const list = useMemo(() => [...upline.map((node) => ({ ...node, depth: 0 })), ...flatten(root)], [root, upline]);
+  // Phones get a paged, searchable list instead of the pan/zoom graph.
+  const members = useMemo(
+    () => list.filter((node) => node.verification !== "self" && (!needle || `${node.alias} ${node.id}`.toLowerCase().includes(needle))),
+    [list, needle],
+  );
+
+  // Start (and reset) with the member's own node centred, whatever the frame width.
+  const rootX = graph.positions.find((node) => node.id === root.id)?.x ?? graph.width / 2;
+  const centerView = () => {
+    const width = frame.current?.clientWidth;
+    setView(width ? { x: Math.round(width / 2 - rootX), y: 12, k: 1 } : { x: 12, y: 12, k: 1 });
+  };
+  const centered = useRef(false);
+  useLayoutEffect(() => {
+    if (centered.current || !frame.current?.clientWidth) return;
+    centered.current = true;
+    centerView();
+  });
 
   useEffect(() => {
     const node = frame.current;
@@ -142,41 +162,54 @@ export default function TeamGraph({ root, upline }) {
               className="field py-2.5 pl-9 text-sm"
             />
           </label>
-          <div className="flex gap-2">
+          <div className="flex gap-2 max-lg:hidden">
             <button type="button" className="icon-btn" aria-label="Zoom in" onClick={() => setView((v) => ({ ...v, k: Math.min(1.7, v.k + 0.1) }))}>
               <Plus size={16} />
             </button>
             <button type="button" className="icon-btn" aria-label="Zoom out" onClick={() => setView((v) => ({ ...v, k: Math.max(0.55, v.k - 0.1) }))}>
               <Minus size={16} />
             </button>
-            <button type="button" className="icon-btn" aria-label="Reset view" onClick={() => setView({ x: 12, y: 12, k: 1 })}>
+            <button type="button" className="icon-btn" aria-label="Reset view" onClick={centerView}>
               <RotateCcw size={15} />
             </button>
           </div>
         </div>
         <div className="flex flex-wrap gap-4 px-4 py-3 text-xs text-mist">
-          <span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-full bg-royal shadow-[0_0_0_4px_rgba(118,103,255,0.15)]" /> Verified sample</span>
-          <span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-full border border-gold" /> Pending sample</span>
+          <span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-full bg-royal shadow-[0_0_0_4px_rgba(57,217,138,0.15)]" /> Active</span>
+          <span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-full border border-gold" /> Pending</span>
           <span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-full bg-gold" /> You</span>
         </div>
-        <ul className="space-y-2 px-4 pb-4 lg:hidden">
-          {list.filter((node) => node.verification !== "self").length === 0 ? (
-            <li className="rounded-xl border border-white/[0.08] px-3 py-4 text-sm text-mist">No sample team records in this view.</li>
+        <div className="px-4 pb-4 lg:hidden">
+          {members.length === 0 ? (
+            <p className="rounded-xl border border-white/[0.08] px-3 py-4 text-sm text-mist">{needle ? "No members match that search." : "No team members yet."}</p>
           ) : (
-            list
-              .filter((node) => node.verification !== "self")
-              .map((node) => (
-                <li key={`mobile-${node.depth}-${node.id}`} className="rounded-xl border border-white/[0.08] px-3 py-3">
-                  <p className="text-sm font-medium text-snow">{node.alias}</p>
-                  <p className="mt-0.5 text-xs text-mist">{node.id}</p>
-                  <p className="mt-1 text-xs text-mist">{node.rank}</p>
-                  <div className="mt-2">
+            <>
+              <ul className="divide-y divide-white/5 overflow-hidden rounded-xl border border-white/[0.08]" aria-label="Team members">
+                {members.slice(0, shown).map((node) => (
+                  <li key={`mobile-${node.depth}-${node.id}`} className="flex items-center justify-between gap-3 px-3 py-2.5">
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-medium text-snow">{node.alias}</span>
+                      <span className="block truncate text-xs text-mist">
+                        {node.id} · {node.rank}
+                      </span>
+                    </span>
                     <StatusBadge status={node.verification} />
-                  </div>
-                </li>
-              ))
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-3 flex items-center justify-between gap-3 text-xs text-mist">
+                <span>
+                  Showing {Math.min(shown, members.length)} of {members.length}
+                </span>
+                {shown < members.length ? (
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShown((count) => count + mobilePage)}>
+                    Show more
+                  </button>
+                ) : null}
+              </div>
+            </>
           )}
-        </ul>
+        </div>
         <div
           ref={frame}
           className="relative hidden h-[28rem] cursor-grab overflow-hidden bg-navy/40 active:cursor-grabbing lg:block"
@@ -212,7 +245,7 @@ export default function TeamGraph({ root, upline }) {
                   key={link.id}
                   d={`M ${link.x1} ${link.y1} C ${link.x1} ${(link.y1 + link.y2) / 2}, ${link.x2} ${(link.y1 + link.y2) / 2}, ${link.x2} ${link.y2}`}
                   fill="none"
-                  stroke={link.pending ? "rgba(220,197,139,0.75)" : "rgba(167,139,250,0.85)"}
+                  stroke={link.pending ? "rgba(246,199,106,0.6)" : "rgba(57,217,138,0.6)"}
                   strokeDasharray={link.pending ? "5 5" : undefined}
                   strokeWidth="1.4"
                 />
@@ -229,7 +262,7 @@ export default function TeamGraph({ root, upline }) {
                   onClick={() => toggle(node)}
                   whileHover={reduce ? undefined : { y: -2 }}
                   className={`absolute w-[132px] rounded-2xl border px-3 py-2 text-left ${
-                    active || match ? "border-royal/70 bg-[#16142c] shadow-[0_0_0_1px_rgba(118,103,255,0.35)]" : "border-line bg-card/95"
+                    active || match ? "border-accent/60 bg-raised shadow-[0_0_0_1px_rgba(57,217,138,0.3)]" : "border-line bg-card/95"
                   }`}
                   style={{ left: node.x - 66, top: node.y - 26 }}
                 >
@@ -278,11 +311,11 @@ export default function TeamGraph({ root, upline }) {
       <div className="dash-card hidden overflow-hidden lg:block xl:col-span-2">
         <div className="border-b border-line px-5 py-4">
           <h3 className="text-base font-semibold">List alternative</h3>
-          <p className="mt-1 text-sm text-mist">The same sample structure, without the graph.</p>
+          <p className="mt-1 text-sm text-mist">The same structure as a list.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="dash-table min-w-[640px]">
-            <caption className="sr-only">Sample network list</caption>
+            <caption className="sr-only">Network list</caption>
             <thead>
               <tr>
                 <th>Member</th>

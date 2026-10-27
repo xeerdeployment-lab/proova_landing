@@ -1,6 +1,6 @@
 /**
  * Static stand-in for the WebGL stage: shown while the 3D chunk loads and on devices without
- * WebGL 2. Same composition — the proova emblem, orbital rings, and a layered network — in SVG.
+ * WebGL 2. Same composition — the Axora emblem, orbital rings, and a layered network — in SVG.
  */
 const directs = [0, 60, 120, 180, 240, 300];
 
