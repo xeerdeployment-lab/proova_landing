@@ -139,7 +139,7 @@ export default function Topbar() {
         </div>
 
         <NetworkStatus />
-        <button
+        {/* <button
           type="button"
           className="icon-btn shrink-0 xl:w-auto xl:gap-2 xl:px-3"
           aria-label="Search or jump to a page"
@@ -149,7 +149,7 @@ export default function Topbar() {
           <Search size={16} />
           <span className="hidden text-xs text-mist xl:inline">Search</span>
           <kbd className="hidden rounded-md border border-line px-1.5 py-0.5 text-[0.625rem] text-mist xl:inline">Ctrl K</kbd>
-        </button>
+        </button> */}
         <WalletStatus />
 
         <div className="relative" ref={alertRef}>
